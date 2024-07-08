@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Dana';
+  src: url(./fonts/Dana/woff2/DanaFaNum-Regular.woff2);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Dana', sans-serif;
+}
