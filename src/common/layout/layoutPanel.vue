@@ -16,9 +16,13 @@
 
     <VNavigationDrawer v-model="drawer" :location="locale === 'en' ? 'left' : 'right'" temporary>
       <VList>
-        <VListItem v-for="router in filterRouter" :key="router.name">
+        <VListItem
+          v-for="router in filterRouter"
+          :key="router.name"
+          :class="[{ 'active-link': isActive(router.path) }, 'hover:bg-gray-400 my-3 rounded-xl transition-all duration-300']"
+        >
           <router-link class="no-underline" :to="router.path">
-            <VListItemTitle :class="theme.name.value === 'dark' ? 'text-white' : 'text-black'">
+            <VListItemTitle :class="[theme.name.value === 'dark' ? 'text-white' : 'text-black']">
               <VIcon color="gray">{{ router.meta.icon }}</VIcon>
               {{ $t(router.name) }}
             </VListItemTitle>
@@ -35,9 +39,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { routes } from '@/views'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useTheme } from 'vuetify'
+import { routes } from '@/views'
 
 const { locale } = useI18n()
 
@@ -45,4 +50,16 @@ const theme = useTheme()
 const drawer = ref(false)
 const findRouter = routes.find((router) => router?.meta?.isSideBar)
 const filterRouter = findRouter?.children?.filter((router) => router) || []
+
+const router = useRouter()
+
+const isActive = (path:string) => {
+  return router.currentRoute.value.path === path
+}
 </script>
+
+<style scoped>
+.active-link {
+  background-color: #9ca3af;
+}
+</style>

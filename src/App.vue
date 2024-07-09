@@ -16,7 +16,7 @@ const route = useRoute()
 const theme = useTheme()
 
 const layoutComponent = computed(() => {
-  if (route.name === 'login' || route.name === 'notFound') {
+  if (route.name === 'login' || route.name === 'notFound' || route.name == 'register') {
     return 'div'
   }
   return layoutPanel

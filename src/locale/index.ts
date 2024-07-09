@@ -5,15 +5,14 @@ const messages = {
     dashboard:'dashboard',
     todos: 'Todos',
     title: 'title',
-    // editTodo: 'edit todo',
+    username: 'username',
+    password: 'password',
+    phoneNumber:'phone number',
     warningEditTodo: 'Are you sure you want to delete this todo?',
-    // textEditTodo: 'This action cannot be undone',
     weather: 'weather',
     profile: 'profile',
     tooltipEditUser: 'edit user',
     submit: 'submit',
-    // yes: 'Yes',
-    // no: 'No',
     successModal: 'success',
     successEdit: 'has be successfully edited',
     successAdd: 'has be successfully added',
@@ -21,6 +20,9 @@ const messages = {
     errorAdd: 'There was an error adding the todo',
     noChangesModal: 'no Changes Modal',
     error: 'error',
+    require:'required',
+    minCharacter:'Min 4 characters',
+    maxCharacters:'max 10 characters'
   },
   fa: {
     AppBar: 'نوار برنامه',
@@ -28,15 +30,13 @@ const messages = {
     dashboard:'داشبورد',
     todos: 'لیست کارها',
     title: 'عنوان',
-    // editTodo: 'ویرایش کار',
+    username: 'نام کاربری',
+    password: 'رمز عبور',
+    phoneNumber:'شماره تماس',
     warningEditTodo: 'از حذف کردن این کار اطمینان دارید؟',
-    // textEditTodo: 'این کار نمی‌تواند لغو شود',
     weather: 'آب و هوا',
     profile: 'پروفایل',
     tooltipEditUser: 'ویرایش کاربر',
-    // submit: 'تایید',
-    // yes: 'بله',
-    // no: 'نه',
     successModal: 'موفقیت',
     successEdit: ' با موفقیت ویرایش شد',
     successAdd: 'با موفقیت اضافه شد',
@@ -44,7 +44,9 @@ const messages = {
     errorAdd: 'در اضافه کردن کار خطایی رخ داد',
     noChangesModal: 'هیچ تغییری صورت نگرفت',
     error: 'خطا',
-    
+    require:'الزامی',
+    minCharacter:'حداقل 4 حرف',
+    maxCharacters:'حداکثر 10 حرف'
   }
 }
 

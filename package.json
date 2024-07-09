@@ -17,6 +17,7 @@
   "dependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/js": "^7.4.47",
+    "@vue/babel-plugin-jsx": "^1.2.2",
     "axios": "^1.7.2",
     "i18next": "^23.11.5",
     "lodash-es": "^4.17.21",
