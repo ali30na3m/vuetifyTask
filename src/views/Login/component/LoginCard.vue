@@ -87,7 +87,7 @@ const getProfile = async () => {
 const loginHandler = () => {
   const findUsername = registerDatas.value.find((data: profileInfo) => {
     if (username.value === data.username && password.value == data.password){
-      return
+      return data
     }
   })
 
