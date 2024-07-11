@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "wrapper/WrapperDiscription.tsx"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "wrapper/**/*.{ts,tsx}"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "target": "ES2022",
@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "jsx":"preserve",
+    "jsx": "preserve",
     "jsxImportSource": "vue",
     "baseUrl": ".",
     "paths": {

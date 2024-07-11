@@ -1,13 +1,14 @@
 module.exports = {
   darkMode: 'class',
-  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+    './outside-directory/**/*.{vue,js,ts,jsx,tsx}' 
+  ],
   theme: {
     extend: {
       colors: {
-        pinkPrimary: '#fbc2eb',
-        pinkSecondary: '#471AAA',
-        purplePrimary: '#a18cd1',
-        purpleSecondary: '#391588'
+        purple: '#6C63FF'
       },
       fontFamily: {
         Dana: 'Dana',

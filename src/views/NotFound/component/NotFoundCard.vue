@@ -1,18 +1,16 @@
 <template>
-  <VContainer class="h-[95vh]">
-    <VRow class="h-[95vh]" align="center" justify="center">
-      <VCol cols="auto">
-        <VCard class="text-center" :title="$t('notfound')" height="" :width="width">
-          <VCardItem>
-            <VBtn color="info">
-              <router-link to="dashboard">
-                {{ $t('gotoDashboard') }}
-              </router-link>
-            </VBtn>
-          </VCardItem>
-        </VCard>
-      </VCol>
-    </VRow>
+  <VContainer class="flex items-center justify-center h-[95vh]">
+    <div class="flex items-center justify-center">
+      <VCard class="text-center" :title="$t('notfound')" height="" :width="width">
+        <VCardItem>
+          <VBtn color="info">
+            <router-link to="dashboard">
+              {{ $t('gotoDashboard') }}
+            </router-link>
+          </VBtn>
+        </VCardItem>
+      </VCard>
+    </div>
   </VContainer>
 </template>
     

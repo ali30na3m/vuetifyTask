@@ -1,12 +1,812 @@
 {
   "profile": [
     {
-      "username": "sina",
-      "phoneNumber": "09123342211",
+      "username": "farhad",
+      "password": "1234",
+      "phoneNumber": "09128883322",
+      "lang": "English",
+      "id": "5ecdbc65-41c9-48e5-ab0f-6e19aa545aa5"
+    },
+    {
+      "username": "reza",
+      "password": "reza1234",
+      "phoneNumber": "09193217682",
       "lang": "Persian",
-      "id": "786f8386-cea0-415b-815b-38036d74fb76"
+      "id": "4029a1f5-a1a0-4271-88b1-dc77ccfbc509"
     }
   ],
-  "todos": [],
-  "weather": []
+  "todos": [
+    {
+      "id": "71ccf4d1-6c08-47c4-a4fe-2e1d2078b873",
+      "profileId": "786f8386-cea0-415b-815b-38036d74fb76",
+      "title": "sina"
+    },
+    {
+      "title": "vue 3",
+      "profileId": "5ecdbc65-41c9-48e5-ab0f-6e19aa545aa5",
+      "id": "8fd0699a-2d86-441b-8ff7-7ba1812334af"
+    }
+  ],
+  "weather": [
+    {
+      "city": "Semnān",
+      "latitude": 35.5625,
+      "longitude": 53.375,
+      "generationtime_ms": 0.033020973205566406,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1174,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T10:15",
+        "interval": 900,
+        "temperature": 38.6,
+        "windspeed": 22.3,
+        "winddirection": 88,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T10:17:22.646Z",
+      "id": "21864f5e-de73-4f84-92ba-17ca018a54d0"
+    },
+    {
+      "city": "Eslāmshahr",
+      "latitude": 35.5625,
+      "longitude": 51.1875,
+      "generationtime_ms": 0.04208087921142578,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1045,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T10:15",
+        "interval": 900,
+        "temperature": 40,
+        "windspeed": 16.3,
+        "winddirection": 133,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T10:17:49.480Z",
+      "id": "d2f78c21-45e2-4822-accb-ad29d8fd84b3"
+    },
+    {
+      "city": "Arāk",
+      "latitude": 34.125,
+      "longitude": 49.6875,
+      "generationtime_ms": 0.1990795135498047,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1747,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 35.8,
+        "windspeed": 20.9,
+        "winddirection": 226,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:46:25.623Z",
+      "id": "ce4143f0-f583-4ab6-8a03-0795beebbed9"
+    },
+    {
+      "city": "Karaj",
+      "latitude": 35.8125,
+      "longitude": 51,
+      "generationtime_ms": 0.04303455352783203,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1341,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T09:30",
+        "interval": 900,
+        "temperature": 35.8,
+        "windspeed": 20.3,
+        "winddirection": 167,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T09:31:04.383Z",
+      "id": "3f8f5639-4c4f-4f5a-b2f5-2f75a13c2aa3"
+    },
+    {
+      "city": "Kermānshāh",
+      "latitude": 34.3125,
+      "longitude": 47.0625,
+      "generationtime_ms": 0.053048133850097656,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1381,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T10:15",
+        "interval": 900,
+        "temperature": 36,
+        "windspeed": 6.7,
+        "winddirection": 324,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T10:18:17.987Z",
+      "id": "4f1297e3-d4c8-43df-81b5-a4b12f38644a"
+    },
+    {
+      "id": "9321edc9-d26a-4dc5-bb77-c3634c0f3b31",
+      "city": "Orūmīyeh",
+      "latitude": 37.5625,
+      "longitude": 45.0625,
+      "generationtime_ms": 0.04398822784423828,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1361,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T09:15",
+        "interval": 900,
+        "temperature": 31.4,
+        "windspeed": 13.2,
+        "winddirection": 55,
+        "is_day": 1,
+        "weathercode": 1
+      },
+      "timeSubmit": "2024-07-10T09:24:18.164Z"
+    },
+    {
+      "id": "2ca0e5de-be7d-4beb-9005-e6ed3efda77a",
+      "city": "Shahrīār",
+      "latitude": 35.6875,
+      "longitude": 51.0625,
+      "generationtime_ms": 0.06604194641113281,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1156,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T09:15",
+        "interval": 900,
+        "temperature": 37.3,
+        "windspeed": 14.8,
+        "winddirection": 139,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T09:24:22.976Z"
+    },
+    {
+      "city": "Mahābād",
+      "latitude": 36.8125,
+      "longitude": 45.75,
+      "generationtime_ms": 0.2518892288208008,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1317,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T10:15",
+        "interval": 900,
+        "temperature": 32.7,
+        "windspeed": 12.7,
+        "winddirection": 353,
+        "is_day": 1,
+        "weathercode": 1
+      },
+      "timeSubmit": "2024-07-10T10:18:39.034Z",
+      "id": "08149018-efbd-4ce2-9b41-6188e5d8c560"
+    },
+    {
+      "city": "Ahvāz",
+      "latitude": 31.3125,
+      "longitude": 48.6875,
+      "generationtime_ms": 0.048995018005371094,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 20,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T10:00",
+        "interval": 900,
+        "temperature": 48.8,
+        "windspeed": 13.5,
+        "winddirection": 326,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T10:01:56.807Z",
+      "id": "861975cb-70db-443a-bfff-3ed3c556d987"
+    },
+    {
+      "city": "Qom",
+      "latitude": 34.625,
+      "longitude": 50.875,
+      "generationtime_ms": 0.04303455352783203,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 929,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T10:00",
+        "interval": 900,
+        "temperature": 40.5,
+        "windspeed": 21.5,
+        "winddirection": 99,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T10:01:51.500Z",
+      "id": "acf829ab-3cb8-48cb-b87c-0348b7cd873f"
+    },
+    {
+      "city": "Qazvīn",
+      "latitude": 36.25,
+      "longitude": 50,
+      "generationtime_ms": 0.06604194641113281,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1302,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T10:45",
+        "interval": 900,
+        "temperature": 37,
+        "windspeed": 11.6,
+        "winddirection": 158,
+        "is_day": 1,
+        "weathercode": 2
+      },
+      "timeSubmit": "2024-07-10T10:51:41.548Z",
+      "id": "98428200-51d4-440c-b6bc-01d67b7ca7c9"
+    },
+    {
+      "id": "a83b63f0-053d-480c-afac-ba7ba851dbd5",
+      "city": "Rasht",
+      "latitude": 37.3125,
+      "longitude": 49.625,
+      "generationtime_ms": 0.06604194641113281,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": -3,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T09:30",
+        "interval": 900,
+        "temperature": 34,
+        "windspeed": 11.8,
+        "winddirection": 20,
+        "is_day": 1,
+        "weathercode": 1
+      },
+      "timeSubmit": "2024-07-10T09:33:23.779Z"
+    },
+    {
+      "id": "a7987d29-023a-48a8-ba0a-bbadb29d1351",
+      "city": "Zāhedān",
+      "latitude": 29.5,
+      "longitude": 60.875,
+      "generationtime_ms": 0.34499168395996094,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1383,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T09:30",
+        "interval": 900,
+        "temperature": 37.1,
+        "windspeed": 29.6,
+        "winddirection": 18,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T09:35:09.019Z"
+    },
+    {
+      "id": "c2c0e5f0-728e-41e0-aacb-3064e1a2089d",
+      "city": "Kermān",
+      "latitude": 30.3125,
+      "longitude": 57.0625,
+      "generationtime_ms": 0.048041343688964844,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1761,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T09:30",
+        "interval": 900,
+        "temperature": 38,
+        "windspeed": 23.8,
+        "winddirection": 52,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T09:38:55.237Z"
+    },
+    {
+      "city": "Bojnūrd",
+      "latitude": 37.4375,
+      "longitude": 57.3125,
+      "generationtime_ms": 0.04601478576660156,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1073,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T10:45",
+        "interval": 900,
+        "temperature": 35,
+        "windspeed": 15.8,
+        "winddirection": 17,
+        "is_day": 1,
+        "weathercode": 2
+      },
+      "timeSubmit": "2024-07-10T10:52:50.334Z",
+      "id": "f91a37ce-e98e-4930-8a99-5d9c004b0708"
+    },
+    {
+      "city": "Jāsk",
+      "latitude": 25.75,
+      "longitude": 57.75,
+      "generationtime_ms": 0.04100799560546875,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 6,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:30",
+        "interval": 900,
+        "temperature": 34.8,
+        "windspeed": 19.6,
+        "winddirection": 174,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:44:06.462Z",
+      "id": "1c41b185-bfcc-4c55-9fdc-6e8cd01b5647"
+    },
+    {
+      "id": "efb3be65-6e06-461b-8a96-98eb9c84b288",
+      "city": "Khomeynī Shahr",
+      "latitude": 32.6875,
+      "longitude": 51.5,
+      "generationtime_ms": 0.27000904083251953,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1609,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:30",
+        "interval": 900,
+        "temperature": 39.2,
+        "windspeed": 17.2,
+        "winddirection": 233,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:40:37.400Z"
+    },
+    {
+      "city": "Khorramshahr",
+      "latitude": 30.4375,
+      "longitude": 48.1875,
+      "generationtime_ms": 0.0400543212890625,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 0,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 48.8,
+        "windspeed": 16.9,
+        "winddirection": 333,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:49:50.949Z",
+      "id": "c1e4b88e-ed33-4e0e-895c-30514c874b5b"
+    },
+    {
+      "id": "524890f7-fa01-4a36-8a6c-f1b1cf596ec0",
+      "city": "Mashhad",
+      "latitude": 36.3125,
+      "longitude": 59.625,
+      "generationtime_ms": 0.04398822784423828,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 986,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 35.1,
+        "windspeed": 13.5,
+        "winddirection": 56,
+        "is_day": 1,
+        "weathercode": 1
+      },
+      "timeSubmit": "2024-07-10T11:45:57.684Z"
+    },
+    {
+      "id": "479a113d-dae9-403e-af52-f655842f05b9",
+      "city": "Rāmshīr",
+      "latitude": 30.875,
+      "longitude": 49.4375,
+      "generationtime_ms": 0.048995018005371094,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 26,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 49.5,
+        "windspeed": 30.8,
+        "winddirection": 323,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:46:06.008Z"
+    },
+    {
+      "id": "117d5873-a2a5-4d72-999c-cf3f841f1a80",
+      "city": "Ţabas",
+      "latitude": 33.625,
+      "longitude": 56.9375,
+      "generationtime_ms": 0.07200241088867188,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 671,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 44.2,
+        "windspeed": 18.7,
+        "winddirection": 56,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:46:10.319Z"
+    },
+    {
+      "id": "71ba8b15-9d2f-4ece-be84-cd27bd4f188c",
+      "city": "Nasīm Shahr",
+      "latitude": 35.5625,
+      "longitude": 51.1875,
+      "generationtime_ms": 0.04506111145019531,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1072,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 40.2,
+        "windspeed": 24.6,
+        "winddirection": 141,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:46:14.901Z"
+    },
+    {
+      "id": "2c838bdd-9996-42cb-bde7-d9cbe2955a84",
+      "city": "Tehran",
+      "latitude": 35.6875,
+      "longitude": 51.4375,
+      "generationtime_ms": 0.048995018005371094,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1193,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 38.9,
+        "windspeed": 16.3,
+        "winddirection": 162,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:50:48.644Z"
+    },
+    {
+      "id": "b34e3a24-efc4-43f1-954c-cb31cd2725ca",
+      "city": "Dārān",
+      "latitude": 33,
+      "longitude": 50.4375,
+      "generationtime_ms": 0.05602836608886719,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 2314,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 30.9,
+        "windspeed": 23.8,
+        "winddirection": 269,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:51:08.603Z"
+    },
+    {
+      "id": "ae047c11-a393-440f-aa09-b2ef7947fbad",
+      "city": "Meshgīn Shahr",
+      "latitude": 38.375,
+      "longitude": 47.625,
+      "generationtime_ms": 0.5639791488647461,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 1423,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 28.9,
+        "windspeed": 17.1,
+        "winddirection": 7,
+        "is_day": 1,
+        "weathercode": 2
+      },
+      "timeSubmit": "2024-07-10T11:51:17.955Z"
+    },
+    {
+      "id": "2773b2c3-8c83-4518-8f38-dd92356b56c1",
+      "city": "Pīshvā",
+      "latitude": 35.3125,
+      "longitude": 51.75,
+      "generationtime_ms": 0.052094459533691406,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 950,
+      "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+      },
+      "current_weather": {
+        "time": "2024-07-10T11:45",
+        "interval": 900,
+        "temperature": 41.5,
+        "windspeed": 27.4,
+        "winddirection": 120,
+        "is_day": 1,
+        "weathercode": 0
+      },
+      "timeSubmit": "2024-07-10T11:51:22.720Z"
+    }
+  ]
 }

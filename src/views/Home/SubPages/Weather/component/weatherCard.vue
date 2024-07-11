@@ -10,17 +10,25 @@
         @update:modelValue="handleChange"
       />
     </VCardText>
-    <VList>
+
+    <VList v-if="!weatherDetails">
+      <VListItem>
+        <div class="text-center">
+          <v-progress-circular color="secondary" indeterminate></v-progress-circular>
+        </div>
+      </VListItem>
+    </VList>
+    <VList v-else>
       <VListItem>
         <VListItemContent>{{ citySelect }}</VListItemContent>
       </VListItem>
-      <VListItem v-if="weatherDetails">
+      <VListItem >
         <VListItemContent>
           {{ weatherDetails.current_weather.temperature }}
           {{ weatherDetails.current_weather_units.temperature }}
         </VListItemContent>
       </VListItem>
-      <VListItem v-if="weatherDescription">
+      <VListItem>
         <VListItemContent>{{ weatherDescription }}</VListItemContent>
       </VListItem>
     </VList>
@@ -34,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch, watchEffect } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getWeatherDescription } from '../weatherStatus'
 import weatherData from '../data/ir.json'
@@ -56,16 +64,17 @@ const weatherDetails = ref<WeatherApi | null>(null)
 const options = ref(weathers.value.map((weather) => weather.city))
 const weatherDescription = ref<string>('')
 const currentCityId = ref<string | null>(null)
+const getWeatherInfos = ref<WeatherApi | null>(null)
 
 const getCachedWeather = async (city: string) => {
   try {
     const response = await getApi(`weather?city=${city}`)
     if (response.length > 0) {
-      currentCityId.value = response[0].id
-      return response[0]
+      getWeatherInfos.value = response[0]
+      return getWeatherInfos.value
     }
     return null
-  } catch {
+  } catch (error) {
     showSnackbar(t('error'), 'error')
     return null
   }
@@ -85,12 +94,25 @@ const handleChange = async () => {
         )
         weatherDetails.value = data
 
+        if (getWeatherInfos.value) {
+          currentCityId.value = getWeatherInfos.value.id
+
+          const submittedTime = new Date(getWeatherInfos.value.timeSubmit)
+          const oneMinuteAgo = new Date()
+          oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1)
+
+          if (submittedTime < oneMinuteAgo) {
+            if (data.current_weather.temperature !== getWeatherInfos.value.current_weather.temperature) {
+              await putWeatherData(citySelect.value, data, getWeatherInfos.value.id)
+            }
+          }
+        }
         const cityAlreadyPosted = await checkCityPosted(citySelect.value)
         if (!cityAlreadyPosted) {
           await postWeatherData(citySelect.value, data)
         }
       }
-    } catch {
+    } catch (error) {
       showSnackbar(t('error'), 'error')
       emptyText()
     }
@@ -108,7 +130,7 @@ const postWeatherData = async (city: string, weatherData: WeatherApi) => {
     })
     currentCityId.value = response.id
     showSnackbar(t('weather_data_saved'), 'success')
-  } catch {
+  } catch (error) {
     showSnackbar(t('error'), 'error')
   }
 }
@@ -117,7 +139,7 @@ const checkCityPosted = async (city: string) => {
   try {
     const response = await getApi(`weather?city=${city}`)
     return response.length > 0
-  } catch {
+  } catch (error) {
     showSnackbar(t('error'), 'error')
     return false
   }
@@ -131,41 +153,11 @@ const putWeatherData = async (city: string, weatherData: WeatherApi, id: string)
       ...weatherData,
       timeSubmit: currentTime
     })
-  } catch {
+    showSnackbar(t('weather_data_updated'), 'success')
+  } catch (error) {
     showSnackbar(t('error'), 'error')
   }
 }
-
-watchEffect(() => {
-  let timer: number | undefined
-  if (weatherDetails.value) {
-    timer = window.setInterval(async () => {
-      const cityDetails = weathers.value.find((weather) => weather.city === citySelect.value)
-      if (cityDetails) {
-        try {
-          const newData = await getApi(
-            `https://api.open-meteo.com/v1/forecast?latitude=${cityDetails.lat}&longitude=${cityDetails.lng}&current_weather=true`
-          )
-          const serverData = await getCachedWeather(citySelect.value) 
-
-          if (serverData && newData.current_weather.temperature !== serverData.current_weather.temperature) {
-            if (currentCityId.value) {
-              await putWeatherData(citySelect.value, newData, currentCityId.value)
-              weatherDetails.value = newData
-            }
-          }
-        } catch {
-          showSnackbar(t('error'), 'error')
-        }
-      }
-    },  60000 * 60000 * 4)
-    return () => {
-      if (timer) {
-        clearInterval(timer)
-      }
-    }
-  }
-})
 
 const emptyText = () => {
   if (!citySelect.value || !weatherDetails.value) {
@@ -185,4 +177,3 @@ onMounted(() => {
   handleChange()
 })
 </script>
-

@@ -1,7 +1,9 @@
 import { dashboardRoute } from './Dashboard'
+import { logout } from './Logout'
 import { profileRoute } from './Profile'
 import { todosRoute } from './Todos'
 import { weatherRoute } from './Weather'
+
 
 export const homeRoutes = {
   path: '/',
@@ -12,5 +14,5 @@ export const homeRoutes = {
     isSideBar: true,
     localePath: '../locale'
   },
-  children: [dashboardRoute, todosRoute, weatherRoute, profileRoute]
+  children: [dashboardRoute, todosRoute, weatherRoute, profileRoute, logout]
 }

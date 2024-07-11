@@ -28,10 +28,11 @@
             </VListItemTitle>
           </router-link>
         </VListItem>
+        
       </VList>
     </VNavigationDrawer>
 
-    <VMain :theme="theme" class="d-flex align-center justify-center" style="height: 90vh">
+    <VMain  class="d-flex align-center justify-center" style="height: 90vh">
       <router-view />
     </VMain>
   </VLayout>

@@ -6,7 +6,7 @@ const messages = {
   },
   fa: {
     login: 'صفحه ورود',
-    haveAccount: 'اکانت نداری؟  یکی بساز.'
+    haveAccount: 'اکانت نداری؟  یکی بساز'
   }
 }
 
