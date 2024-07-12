@@ -19,7 +19,7 @@
         <VListItem
           v-for="router in filterRouter"
           :key="router.name"
-          :class="[{ 'active-link': isActive(router.path) }, 'hover:bg-gray-400 my-3 rounded-xl transition-all duration-300']"
+          :class="[{ 'active-link': isActive(router.path) }, 'hover:bg-purple my-3 rounded-xl transition-all duration-300']"
         >
           <router-link class="no-underline" :to="router.path">
             <VListItemTitle :class="[theme.name.value === 'dark' ? 'text-white' : 'text-black']">
@@ -61,6 +61,6 @@ const isActive = (path:string) => {
 
 <style scoped>
 .active-link {
-  background-color: #9ca3af;
+  background-color: #6c63ff;
 }
 </style>

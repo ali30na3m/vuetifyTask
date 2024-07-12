@@ -19,9 +19,14 @@
       </VListItem>
     </VList>
     <VList v-else>
-      <div class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:flex child:items-center child:justify-between child:py-2 child:border-b-2 child:border-purple">
+      <div
+        class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:flex child:items-center child:justify-between child:py-2 child:border-b-2 child:border-purple"
+      >
         <div>
-          <h3>WindSpeed:</h3>
+          <h3>
+            <VIcon>mdi-weather-windy</VIcon>
+            WindSpeed:
+          </h3>
           <p>
             {{ weatherDetails.current_weather.windspeed }}
             {{ weatherDetails.current_weather_units.windspeed }}
@@ -29,6 +34,7 @@
         </div>
         <div>
           <h3>
+            <VIcon>mdi-thermometer</VIcon>
             temp:
           </h3>
           <p>
@@ -37,9 +43,15 @@
           </p>
         </div>
         <div>
-          <h3>status:</h3>
+          
+          <h3>
+            <VIcon>
+              {{ weatherDescription[1] }}
+            </VIcon>
+            status:
+          </h3>
           <p>
-            {{ weatherDescription }}
+            {{ weatherDescription[0] }}
           </p>
         </div>
       </div>
@@ -63,6 +75,7 @@ import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import useHttp from '@/composables/useHttp'
 import { useSnackbar } from '@/composables/useSnackBar'
 import type { WeatherTypeData, WeatherApi, WeatherCatch } from '../type'
+import { VIcon } from 'vuetify/lib/components/index.mjs'
 
 const { width } = useResponsiveWidth()
 const { getApi, postApi, putApi } = useHttp()
@@ -74,7 +87,7 @@ const citySelect = ref<string>('Tehran')
 const weathers = ref<WeatherTypeData[]>(weatherData)
 const weatherDetails = ref<WeatherApi | null>(null)
 const options = ref(weathers.value.map((weather) => weather.city))
-const weatherDescription = ref<string>('')
+const weatherDescription = ref<string[]>([])
 const currentCityId = ref<string | null>(null)
 const getWeatherInfos = ref<WeatherCatch | null>(null)
 
@@ -181,8 +194,9 @@ const emptyText = () => {
 watch(weatherDetails, (newDetails) => {
   if (newDetails) {
     weatherDescription.value = getWeatherDescription(newDetails.current_weather.weathercode, t)
+    
   } else {
-    weatherDescription.value = ''
+    weatherDescription.value = []
   }
 })
 
@@ -192,10 +206,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
-h3{
-  @apply text-2xl font-medium ;
+h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
 }
-p{
-  @apply text-xl font-medium;
+p {
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 </style>

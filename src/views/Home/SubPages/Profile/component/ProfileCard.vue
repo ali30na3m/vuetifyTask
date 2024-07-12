@@ -1,23 +1,38 @@
 <template>
-  <VCard class="main-content text-center" :title="$t('profile')" :width="width">
+  <VCard class="text-center !shadow-none" :title="$t('profile')" :width="width">
     <VCardText>
       <VTextField
         v-model="username"
-        :rules="baseRules"
+        :rules="userRules"
         :label="$t('username')"
+        :class="[
+          ' rounded-md w-full my-2 border-2',
+          theme.global.name.value === 'dark'
+            ? 'border-white child:text-white'
+            : 'border-purple child:text-purple'
+        ]"
+        color="white"
         prepend-inner-icon="mdi-account"
         clearable
-        autofocus
+        hide-details
         @blur="validateUsername"
         @focus="validateUsername"
         @keyup.enter="submitHandler"
       />
       <VTextField
         v-model="phoneNumber"
-        :rules="baseRules"
+        :rules="phoneRules"
         :label="$t('phoneNumber')"
+        :class="[
+          'child:text-purple rounded-md w-full my-2 border-2',
+          theme.global.name.value === 'dark'
+            ? 'border-white child:text-white'
+            : 'border-purple child:text-purple'
+        ]"
+        :color="theme.global.name.value === 'dark' ? 'white' : ''"
         prepend-inner-icon="mdi-phone"
         clearable
+        hide-details
         @blur="validatePhoneNumber"
         @focus="validatePhoneNumber"
         @keyup.enter="submitHandler"
@@ -27,20 +42,23 @@
         :items="languages"
         label="Select Language"
         prepend-inner-icon="mdi-translate"
+        class="text-white bg-[#6c63ff] rounded-md w-full my-2"
         persistent-hint
         single-line
+        hide-details
       />
       <VSelect
         v-model="themeSelect"
         :items="themes"
         label="Select Theme"
         prepend-inner-icon="mdi-theme-light-dark"
+        class="text-white bg-[#6c63ff] rounded-md w-full my-2"
         persistent-hint
         single-line
+        hide-details
       />
       <div class="flex items-center justify-center gap-3">
         <VBtn width="30%" color="info" @click="submitHandler">{{ $t('submit') }}</VBtn>
-        <VBtn width="30%" color="info" @click="openModal">{{ $t('showUserDetail') }}</VBtn>
       </div>
     </VCardText>
     <WrapperSnackBar
@@ -50,6 +68,9 @@
       :colorSet="colorSnackBar"
     />
   </VCard>
+  <VBtn class="absolute right-0 -bottom-20 !shadow-none" icon color="#6c63ff">
+    <VIcon @click="openModal">mdi-account</VIcon>
+  </VBtn>
   <WrapperDiscription
     v-model:show="showModal"
     :title="t('userPhoneTitle')"
@@ -69,6 +90,7 @@ import useHttp from '@/composables/useHttp'
 import { useLocalstorage } from '@/composables/useLocalstorage'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import { useSnackbar } from '@/composables/useSnackBar'
+import { useRules } from '@/composables/useRules'
 import type { profileInfo } from '@/views/Login/type'
 
 const { locale, t } = useI18n()
@@ -77,6 +99,7 @@ const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 const { getApi, putApi } = useHttp()
 const { setLocalStorage, getLocalStorage } = useLocalstorage()
+const { phoneRules, isValidationPhone, userRules, isValidationUser } = useRules()
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -91,17 +114,11 @@ const showModal = ref<boolean>(false)
 const usernameRules = ref<any[]>([])
 const phoneNumberRules = ref<any[]>([])
 
-const baseRules = [
-  (value: string | null) => !!value || t('require'),
-  (value: string | null) => (value && value.length >= 4) || t('minCharacter'),
-  (value: string | null) => (value && value.length <= 12) || t('maxCharacters')
-]
-
 const validateUsername = () => {
-  usernameRules.value = baseRules
+  usernameRules.value = userRules
 }
 const validatePhoneNumber = () => {
-  phoneNumberRules.value = baseRules
+  phoneNumberRules.value = phoneRules
 }
 
 const openModal = () => {
@@ -128,15 +145,17 @@ const submitHandler = () => {
     lang: langSelect.value
   }
   try {
-    putApi(`profile/${id.value}`, newProfile).then(() => {
-      setLocalStorage('theme', themeSelect.value)
-      setLocalStorage('username', username.value)
-      setLocalStorage('lang', langSelect.value == 'English' ? 'en' : 'fa')
-      theme.global.name.value = themeSelect.value
-      locale.value = langSelect.value == 'English' ? 'en' : 'fa'
-      showSnackbar(t('successEdit'), 'success')
-      getProfile()
-    })
+    if (isValidationUser(username.value) && isValidationPhone(phoneNumber.value)) {
+      putApi(`profile/${id.value}`, newProfile).then(() => {
+        setLocalStorage('theme', themeSelect.value)
+        setLocalStorage('username', username.value)
+        setLocalStorage('lang', langSelect.value == 'English' ? 'en' : 'fa')
+        theme.global.name.value = themeSelect.value
+        locale.value = langSelect.value == 'English' ? 'en' : 'fa'
+        showSnackbar(t('successEdit'), 'success')
+        getProfile()
+      })
+    }
   } catch {
     showSnackbar(t('error'), 'error')
   }

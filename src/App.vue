@@ -9,8 +9,8 @@
 <script lang="ts" setup>
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import layoutPanel from '@/common/layout/layoutPanel.vue'
 import { useTheme } from 'vuetify'
+import layoutPanel from '@/common/layout/layoutPanel.vue'
 
 const route = useRoute()
 const theme = useTheme()

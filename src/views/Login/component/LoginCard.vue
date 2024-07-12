@@ -1,36 +1,54 @@
 <template>
   <VContainer class="flex item-center justify-center h-[95vh]">
     <div class="flex items-center justify-center">
-      <VCard class="text-center" :title="$t('login')" :width="width">
+      <VCard class="text-center !shadow-none" :title="$t('login')" :width="width">
         <VCardItem>
           <VTextField
             v-model="username"
             :rules="usernameRules"
-            class="m-auto"
             :label="$t('username')"
+            :class="[
+              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
+              theme.global.name.value === 'dark'
+                ? 'border-white child:text-white'
+                : 'border-purple child:text-purple'
+            ]"
+            :color="theme.global.name.value === 'dark' ? 'white' : ''"
+            prepend-inner-icon="mdi-phone"
             clearable
-            autofocus
-            width="70%"
+            hide-details
             @blur="validateUsername"
             @focus="validateUsername"
             @keyup.enter="loginHandler"
-          ></VTextField>
+          />
         </VCardItem>
         <VCardItem>
           <VTextField
             v-model="password"
+            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :rules="passwordRules"
-            class="m-auto"
             :label="$t('password')"
+            :class="[
+              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
+              theme.global.name.value === 'dark'
+                ? 'border-white child:text-white'
+                : 'border-purple child:text-purple'
+            ]"
+            :color="theme.global.name.value === 'dark' ? 'white' : ''"
+            :type="visible ? 'text' : 'password'"
+            prepend-inner-icon="mdi-lock"
             clearable
-            width="70%"
+            hide-details
+            @click:append-inner="visible = !visible"
             @blur="validatePassword"
             @focus="validatePassword"
             @keyup.enter="loginHandler"
-          ></VTextField>
+          />
         </VCardItem>
         <VCardItem>
-          <VBtn width="30%" color="info" @click="loginHandler" :disabled="!isValid">{{ $t('login') }}</VBtn>
+          <VBtn width="30%" color="info" @click="loginHandler" :disabled="!isValid">{{
+            $t('login')
+          }}</VBtn>
         </VCardItem>
         <VCardItem>
           <router-link class="text-blue-500" to="/register">{{ $t('haveAccount') }}</router-link>
@@ -47,8 +65,10 @@
 </template>
 
 <script lang="ts" setup>
+import { useTheme } from 'vuetify/lib/framework.mjs'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
 import WrapperSnackBar from 'wrapper/WrapperSnackBar'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import { useSnackbar } from '@/composables/useSnackBar'
@@ -56,8 +76,8 @@ import { useLocalstorage } from '@/composables/useLocalstorage'
 import useHttp from '@/composables/useHttp'
 import router from '@/views'
 import type { profileInfo } from '../type'
-import { RouterLink } from 'vue-router'
 
+const theme = useTheme()
 const { t } = useI18n()
 const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
@@ -67,6 +87,7 @@ const { getApi } = useHttp()
 const registerDatas = ref<profileInfo[]>([])
 const username = ref<string>('')
 const password = ref<string>('')
+const visible = ref<boolean>(false)
 
 const usernameRules = ref<any[]>([])
 const passwordRules = ref<any[]>([])
@@ -100,7 +121,6 @@ const getProfile = async () => {
 }
 
 const loginHandler = () => {
- 
   if (!isValid.value) {
     showSnackbar(t('error'), 'error')
     return

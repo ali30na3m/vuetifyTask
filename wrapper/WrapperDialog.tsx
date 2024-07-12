@@ -9,18 +9,22 @@ import { VBtn } from "vuetify/lib/components/index.mjs";
 
 export default defineComponent({
     props: {
-        editDialog: {
+        isOpenDialog: {
             type: Boolean,
             required: true,
         },
+        headerTitle : {
+            type: String,
+            required: true,
+        }
     },
-    emits: ['update:editDialog', 'updateTodo'],
+    emits: ['update:isOpenDialog', 'updateTodo'],
     setup(props, { emit, slots }) {
         const theme = useTheme();
         const {t} = useI18n()
 
         const closeDialog = () => {
-            emit('update:editDialog', false);
+            emit('update:isOpenDialog', false);
         };
 
         const updateTodo = () => {
@@ -28,12 +32,12 @@ export default defineComponent({
         };
 
         return () => (
-            <VDialog modelValue={props.editDialog} onUpdate:modelValue={(value) => emit('update:editDialog', value)} persistent max-width="500px">
+            <VDialog modelValue={props.isOpenDialog} onUpdate:modelValue={(value) => emit('update:isOpenDialog', value)} persistent max-width="500px" maxHeight="400px">
                 <VCard>
-                    <VCardTitle class="!text-2xl !font-bold text-center">editTodo</VCardTitle>
-                    <VCardText class="flex items-center justify-center">
+                    <VCardTitle class="!text-2xl !font-bold text-center">{props.headerTitle}</VCardTitle>
+                    <div class="flex flex-col items-center justify-center px-6">
                         {slots.default ? slots.default() : null}
-                    </VCardText>
+                    </div>
                     <div class="w-full flex items-center justify-between px-6 my-6">
                         <VBtn
                             class="child:!text-[#6c63ff] child:!font-bold !border-[#6c63ff] !border-2"

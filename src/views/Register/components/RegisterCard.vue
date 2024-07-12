@@ -6,44 +6,64 @@
           <VTextField
             v-model="username"
             :rules="usernameRules"
-            class="m-auto"
-            hide-details="auto"
             :label="$t('username')"
+            :class="[
+              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
+              theme.global.name.value === 'dark'
+                ? 'border-white child:text-white'
+                : 'border-purple child:text-purple'
+            ]"
+            :color="theme.global.name.value === 'dark' ? 'white' : ''"
+            prepend-inner-icon="mdi-account"
             clearable
-            autofocus
-            width="70%"
+            hide-details
             @blur="validateUsername"
             @focus="validateUsername"
             @keyup.enter="registerHandler"
-          ></VTextField>
+          />
         </VCardItem>
         <VCardItem>
           <VTextField
             v-model="password"
+            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :rules="passwordRules"
-            class="m-auto"
-            hide-details="auto"
             :label="$t('password')"
+            :class="[
+              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
+              theme.global.name.value === 'dark'
+                ? 'border-white child:text-white'
+                : 'border-purple child:text-purple'
+            ]"
+            :color="theme.global.name.value === 'dark' ? 'white' : ''"
+            :type="visible ? 'text' : 'password'"
+            prepend-inner-icon="mdi-lock"
             clearable
-            width="70%"
+            hide-details
+            @click:append-inner="visible = !visible"
             @blur="validatePassword"
             @focus="validatePassword"
             @keyup.enter="registerHandler"
-          ></VTextField>
+          />
         </VCardItem>
         <VCardItem>
           <VTextField
             v-model="phoneNumber"
             :rules="phoneNumberRules"
-            class="m-auto"
-            hide-details="auto"
             :label="$t('phoneNumber')"
+            :class="[
+              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
+              theme.global.name.value === 'dark'
+                ? 'border-white child:text-white'
+                : 'border-purple child:text-purple'
+            ]"
+            :color="theme.global.name.value === 'dark' ? 'white' : ''"
+            prepend-inner-icon="mdi-phone"
             clearable
-            width="70%"
+            hide-details
             @blur="validatePhoneNumber"
             @focus="validatePhoneNumber"
             @keyup.enter="registerHandler"
-          ></VTextField>
+          />
         </VCardItem>
         <VCardItem>
           <VBtn width="30%" color="info" :disabled="!isValid" @click="registerHandler">{{
@@ -61,9 +81,10 @@
   </VContainer>
 </template>
     
-  <script lang="ts" setup>
+<script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useTheme } from 'vuetify/lib/framework.mjs'
 import WrapperSnackBar from 'wrapper/WrapperSnackBar'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import { useSnackbar } from '@/composables/useSnackBar'
@@ -71,6 +92,7 @@ import { useLocalstorage } from '@/composables/useLocalstorage'
 import useHttp from '@/composables/useHttp'
 import router from '@/views'
 
+const theme = useTheme()
 const { t } = useI18n()
 const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
@@ -80,15 +102,22 @@ const { postApi } = useHttp()
 const username = ref<string>('')
 const password = ref<string>('')
 const phoneNumber = ref<number>()
+const visible = ref<boolean>(false)
 
 const usernameRules = ref<any[]>([])
 const passwordRules = ref<any[]>([])
 const phoneNumberRules = ref<any[]>([])
+const phoneRegex = /^[0-9]{11}$/
 
 const baseRules = [
   (value: string | null) => !!value || t('require'),
   (value: string | null) => (value && value.length >= 4) || t('minCharacter'),
   (value: string | null) => (value && value.length <= 12) || t('maxCharacter')
+]
+
+const phoneRules = [
+  (value: string) => !!value || 'Phone number is required',
+  (value: string) => phoneRegex.test(value) || 'Phone number must be 11 digits'
 ]
 
 const validateUsername = () => {
@@ -98,7 +127,7 @@ const validatePassword = () => {
   passwordRules.value = baseRules
 }
 const validatePhoneNumber = () => {
-  phoneNumberRules.value = baseRules
+  phoneNumberRules.value = phoneRules
 }
 
 const isValid = computed(() => {
