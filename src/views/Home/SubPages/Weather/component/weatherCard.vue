@@ -1,12 +1,12 @@
 <template>
-  <VCard class="main-content text-center" :title="$t('weather')" :width="width">
+  <VCard class="text-center !shadow-none" :title="$t('weather').toUpperCase()" :width="width">
     <VCardText>
       <VSelect
         v-model="citySelect"
         :items="options"
-        label="Select"
-        persistent-hint
+        class="text-white bg-[#6c63ff] rounded-md w-full"
         single-line
+        hide-details
         @update:modelValue="handleChange"
       />
     </VCardText>
@@ -19,18 +19,30 @@
       </VListItem>
     </VList>
     <VList v-else>
-      <VListItem>
-        <VListItemContent>{{ citySelect }}</VListItemContent>
-      </VListItem>
-      <VListItem >
-        <VListItemContent>
-          {{ weatherDetails.current_weather.temperature }}
-          {{ weatherDetails.current_weather_units.temperature }}
-        </VListItemContent>
-      </VListItem>
-      <VListItem>
-        <VListItemContent>{{ weatherDescription }}</VListItemContent>
-      </VListItem>
+      <div class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:flex child:items-center child:justify-between child:py-2 child:border-b-2 child:border-purple">
+        <div>
+          <h3>WindSpeed:</h3>
+          <p>
+            {{ weatherDetails.current_weather.windspeed }}
+            {{ weatherDetails.current_weather_units.windspeed }}
+          </p>
+        </div>
+        <div>
+          <h3>
+            temp:
+          </h3>
+          <p>
+            {{ weatherDetails.current_weather.temperature }}
+            {{ weatherDetails.current_weather_units.temperature }}
+          </p>
+        </div>
+        <div>
+          <h3>status:</h3>
+          <p>
+            {{ weatherDescription }}
+          </p>
+        </div>
+      </div>
     </VList>
     <WrapperSnackBar
       v-model:snackBar="snackBar"
@@ -50,7 +62,7 @@ import WrapperSnackBar from 'wrapper/WrapperSnackBar'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import useHttp from '@/composables/useHttp'
 import { useSnackbar } from '@/composables/useSnackBar'
-import type { WeatherTypeData, WeatherApi } from '../type'
+import type { WeatherTypeData, WeatherApi, WeatherCatch } from '../type'
 
 const { width } = useResponsiveWidth()
 const { getApi, postApi, putApi } = useHttp()
@@ -64,7 +76,7 @@ const weatherDetails = ref<WeatherApi | null>(null)
 const options = ref(weathers.value.map((weather) => weather.city))
 const weatherDescription = ref<string>('')
 const currentCityId = ref<string | null>(null)
-const getWeatherInfos = ref<WeatherApi | null>(null)
+const getWeatherInfos = ref<WeatherCatch | null>(null)
 
 const getCachedWeather = async (city: string) => {
   try {
@@ -82,14 +94,12 @@ const getCachedWeather = async (city: string) => {
 
 const handleChange = async () => {
   const cityDetails = weathers.value.find((weather) => weather.city === citySelect.value)
-
   if (cityDetails) {
     try {
       const cachedWeather = await getCachedWeather(citySelect.value)
       if (cachedWeather) {
         weatherDetails.value = cachedWeather
-      }
-       else {
+      } else {
         const data = await getApi(
           `https://api.open-meteo.com/v1/forecast?latitude=${cityDetails.lat}&longitude=${cityDetails.lng}&current_weather=true`
         )
@@ -99,11 +109,13 @@ const handleChange = async () => {
           currentCityId.value = getWeatherInfos.value.id
 
           const submittedTime = new Date(getWeatherInfos.value.timeSubmit)
-          const oneMinuteAgo = new Date()
-          oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1)
+          const fourHourAgo = new Date()
+          fourHourAgo.setHours(fourHourAgo.getHours() - 4)
 
-          if (submittedTime < oneMinuteAgo) {
-            if (data.current_weather.temperature !== getWeatherInfos.value.current_weather.temperature) {
+          if (submittedTime < fourHourAgo) {
+            if (
+              data.current_weather.temperature !== getWeatherInfos.value.current_weather.temperature
+            ) {
               await putWeatherData(citySelect.value, data, getWeatherInfos.value.id)
             }
           }
@@ -178,3 +190,12 @@ onMounted(() => {
   handleChange()
 })
 </script>
+
+<style scoped>
+h3{
+  @apply text-2xl font-medium ;
+}
+p{
+  @apply text-xl font-medium;
+}
+</style>

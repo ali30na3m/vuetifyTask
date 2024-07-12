@@ -1,3 +1,11 @@
+export interface WeatherCatch extends WeatherApi {
+  id: string
+  city: string
+  lat: number
+  lng: number
+  timeSubmit:string
+}
+
 export interface WeatherTypeData {
   city: string
   lat: string

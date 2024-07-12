@@ -3,15 +3,13 @@
     class="text-center !shadow-none !overflow-y-auto"
     :title="$t('todoList').toLocaleUpperCase()"
     :width="width"
-    height="400px"
-  >
+    height="450px"
+    >
     <div class="flex items-center gap-4 w-full px-3">
       <VTextField
         v-model="todoTitle"
         :rules="baseRules"
         :label="$t('todoList')"
-        :clearable="true"
-        :reverse="true"
         class="border-2 border-purple child:text-purple rounded-md w-[350px]"
         color="white"
         hide-details
@@ -23,22 +21,25 @@
       <VSelect
         v-model="selectCategory"
         :items="categories"
-        class="text-white bg-[#6c63ff] rounded-md"
-        :style="{ width: '40px' }"
+        class="text-white bg-[#6c63ff] rounded-md w-10"
         single-line
         hide-details
       />
     </div>
 
     <div class="mt-8 px-3 w-full">
+      <div class="flex items-center justify-center w-full"  v-if="todos.length === 0">
+        <img class="w-[200px] h-[200px]" src="../../../../../assets/images/19.jpg" alt="no todos">
+      </div>
       <div
+        v-else
         v-for="todo in todos"
         :key="todo.id"
-        class="flex item-center justify-between border-b-2 border-purple py-3"
+        class="py-3"
       >
-      
-        <div class="flex items-center">
-          <VCheckbox
+        <div v-if="selectCategory === 'All'" class="flex items-center justify-between w-full border-b-2 border-purple ">
+          <div class="flex items-center">
+            <VCheckbox
             v-model="todo.isCompleted"
             :value="!checkBoxTodo"
             color="indigo-darken-3"
@@ -53,15 +54,71 @@
           >
             {{ todo.title }}
           </p>
+          </div> 
+          <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
+            <VBtn icon class="!shadow-none" @click="editTodo(todo)">
+              <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
+            </VBtn>
+            <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
+              <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
+            </VBtn>
+          </div>
         </div>
-        <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
-          <VBtn icon class="!shadow-none" @click="editTodo(todo)">
-            <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
-          </VBtn>
-          <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
-            <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
-          </VBtn>
+        <div v-if="selectCategory === 'Complete' && todo.isCompleted === true" class="flex items-center justify-between border-b-2 border-purple ">
+          <div class="flex items-center">
+            <VCheckbox
+            v-model="todo.isCompleted"
+            :value="!checkBoxTodo"
+            color="indigo-darken-3"
+            hide-details
+            @click="editTodoCompleted(todo)"
+          />
+          <p
+            :class="[
+              'flex items-center justify-center',
+              todo.isCompleted ? 'line-through text-gray-300' : ''
+            ]"
+          >
+            {{ todo.title }}
+          </p>
+          </div> 
+          <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
+            <VBtn icon class="!shadow-none" @click="editTodo(todo)">
+              <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
+            </VBtn>
+            <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
+              <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
+            </VBtn>
+          </div>
         </div>
+        <div v-if="selectCategory === 'UnComplete' && !todo.isCompleted" class="flex items-center justify-between border-b-2 border-purple ">
+          <div class="flex items-center">
+            <VCheckbox
+            v-model="todo.isCompleted"
+            :value="!checkBoxTodo"
+            color="indigo-darken-3"
+            hide-details
+            @click="editTodoCompleted(todo)"
+          />
+          <p
+            :class="[
+              'flex items-center justify-center',
+              todo.isCompleted ? 'line-through text-gray-300' : ''
+            ]"
+          >
+            {{ todo.title }}
+          </p>
+          </div> 
+          <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
+            <VBtn icon class="!shadow-none" @click="editTodo(todo)">
+              <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
+            </VBtn>
+            <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
+              <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
+            </VBtn>
+          </div>
+        </div>
+       
       </div>
     </div>
 
@@ -105,7 +162,7 @@
       :colorSet="colorSnackBar"
     />
   </VCard>
-  <VBtn class="absolute right-0 -bottom-24 !shadow-none" icon color="#6c63ff">
+  <VBtn class="absolute right-0 -bottom-20 !shadow-none" icon color="#6c63ff">
     <VIcon color="white">mdi-plus</VIcon>
   </VBtn>
 </template>
@@ -247,11 +304,9 @@ const editTodoCompleted = async (todo: TodosInfo) => {
     profileId: idUsername.value,
     isCompleted: !todo.isCompleted
   }
-  console.log('title', title)
 
   try {
     await putApi(`todos/${todo.id}`, title).then((data) => {
-      console.log('title', data)
       getTodos()
       showSnackbar(t('successEdit'), 'success')
     })
