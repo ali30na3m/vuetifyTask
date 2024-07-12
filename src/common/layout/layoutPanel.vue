@@ -32,7 +32,7 @@
       </VList>
     </VNavigationDrawer>
 
-    <VMain  class="d-flex align-center justify-center" style="height: 90vh">
+    <VMain  class="child:relative d-flex align-center justify-center" style="height: 90vh">
       <router-view />
     </VMain>
   </VLayout>

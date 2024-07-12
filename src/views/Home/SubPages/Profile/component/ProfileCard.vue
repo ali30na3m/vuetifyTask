@@ -63,7 +63,7 @@
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTheme } from 'vuetify'
-import WrapperSnackBar from 'wrapper/WrapperSnackBar.vue'
+import WrapperSnackBar from 'wrapper/WrapperSnackBar'
 import WrapperDiscription from 'wrapper/WrapperDiscription.jsx'
 import useHttp from '@/composables/useHttp'
 import { useLocalstorage } from '@/composables/useLocalstorage'

@@ -11,7 +11,7 @@ export const useResponsiveWidth = () => {
       case 'sm':
         return 400
       case 'md':
-        return 500
+        return 600
       case 'lg':
         return 600
       case 'xl':

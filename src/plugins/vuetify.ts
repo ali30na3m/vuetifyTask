@@ -20,7 +20,7 @@ const light: ThemeDefinition = {
 const dark: ThemeDefinition = {
   dark: true,
   colors: {
-    background: '#18181b',
+    background: '#252525',
     surface: '#3f3f46',
     primary: '#3f3f46',
     'primary-darken-1': '#52525b',

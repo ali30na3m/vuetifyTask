@@ -46,7 +46,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getWeatherDescription } from '../weatherStatus'
 import weatherData from '../data/ir.json'
-import WrapperSnackBar from 'wrapper/WrapperSnackBar.vue'
+import WrapperSnackBar from 'wrapper/WrapperSnackBar'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import useHttp from '@/composables/useHttp'
 import { useSnackbar } from '@/composables/useSnackBar'
@@ -88,7 +88,8 @@ const handleChange = async () => {
       const cachedWeather = await getCachedWeather(citySelect.value)
       if (cachedWeather) {
         weatherDetails.value = cachedWeather
-      } else {
+      }
+       else {
         const data = await getApi(
           `https://api.open-meteo.com/v1/forecast?latitude=${cityDetails.lat}&longitude=${cityDetails.lng}&current_weather=true`
         )
@@ -153,7 +154,7 @@ const putWeatherData = async (city: string, weatherData: WeatherApi, id: string)
       ...weatherData,
       timeSubmit: currentTime
     })
-    showSnackbar(t('weather_data_updated'), 'success')
+    showSnackbar(t('weather_data_saved'), 'success')
   } catch (error) {
     showSnackbar(t('error'), 'error')
   }

@@ -1,143 +1,138 @@
 <template>
-  <WrapperCard width="300">
-    salam
-  </WrapperCard>
-  <!-- <VCard
-    class="text-center overflow-y-auto "
+  <VCard
+    class="text-center !shadow-none !overflow-y-auto"
     :title="$t('todoList').toLocaleUpperCase()"
-    width="600px"
+    :width="width"
     height="400px"
   >
-    <VCardText>
-      <div class="flex items-center justify-between gap-5">
-        <VTextField
-          :loading="loading"
-          class=""
-          density="default"
-          placeholder="Search note..."
-          hide-details
-          single-line
-          width="300px"
-          @click:append-inner="onClick"
-          append-inner-icon="mdi-magnify"
-        ></VTextField>
-
-        <VSelect
-        :items="items"
-        label="All"
-        width="40px"
-        
-        prepend-inner-icon="mdi-translate"
+    <div class="flex items-center gap-4 w-full px-3">
+      <VTextField
+        v-model="todoTitle"
+        :rules="baseRules"
+        :label="$t('todoList')"
+        :clearable="true"
+        :reverse="true"
+        class="border-2 border-purple child:text-purple rounded-md w-[350px]"
+        color="white"
         hide-details
-      ></VSelect>
+        @blur="validateTodoTitle"
+        @focus="validateTodoTitle"
+        @keyup.enter="addButton"
+      >
+      </VTextField>
+      <VSelect
+        v-model="selectCategory"
+        :items="categories"
+        class="text-white bg-[#6c63ff] rounded-md"
+        :style="{ width: '40px' }"
+        single-line
+        hide-details
+      />
+    </div>
+
+    <div class="mt-8 px-3 w-full">
+      <div
+        v-for="todo in todos"
+        :key="todo.id"
+        class="flex item-center justify-between border-b-2 border-purple py-3"
+      >
       
-      </div>
-    </VCardText>
-
-    <VCardText>
-      <div class="flex items-center justify-between gap-2">
-        <VTextField
-          v-model="todoTitle"
-          :rules="baseRules"
-          :label="$t('todoList')"
-          clearable
-          autofocus
-          @blur="validateTodoTitle"
-          @focus="validateTodoTitle"
-          @keyup.enter="addButton"
-        />
-        <VBtn color="info" append-icon="mdi-plus" @click="addButton" :disabled="!isValid">
-          {{ $t('AddTodo') }}
-        </VBtn>
-      </div>
-    </VCardText>
-
-    <VList>
-      <VListItem v-for="todo in todos" :key="todo.id">
-        <div
-          class="flex items-center justify-between w-full py-3 px-2 border-2 border-blue-400 rounded-lg"
-        >
-          <VListItemTitle class="text-start">{{ todo.title }}</VListItemTitle>
-          <div class="flex items-center justify-end gap-3">
-            <VBtn icon @click="editTodo(todo)" aria-label="Edit Todo">
-              <VIcon color="blue">mdi-pencil</VIcon>
-            </VBtn>
-            <VBtn icon @click="removeTodoPrompt(todo.id)" aria-label="Remove Todo">
-              <VIcon color="red">mdi-delete</VIcon>
-            </VBtn>
-          </div>
+        <div class="flex items-center">
+          <VCheckbox
+            v-model="todo.isCompleted"
+            :value="!checkBoxTodo"
+            color="indigo-darken-3"
+            hide-details
+            @click="editTodoCompleted(todo)"
+          />
+          <p
+            :class="[
+              'flex items-center justify-center',
+              todo.isCompleted ? 'line-through text-gray-300' : ''
+            ]"
+          >
+            {{ todo.title }}
+          </p>
         </div>
-      </VListItem>
-    </VList>
+        <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
+          <VBtn icon class="!shadow-none" @click="editTodo(todo)">
+            <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
+          </VBtn>
+          <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
+            <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
+          </VBtn>
+        </div>
+      </div>
+    </div>
 
-    <VDialog v-model="editDialog" persistent max-width="600px">
-      <VCard>
-        <VCardTitle class="text-h5">{{ $t('editTodo') }}</VCardTitle>
-        <VCardText>
-          <VTextField
-            v-model="editTodoTitle"
-            :rules="baseRules"
-            :label="$t('todoList')"
-            clearable
-            autofocus
-            @blur="validateEditTodoTitle"
-            @focus="validateEditTodoTitle"
-            @keyup.enter="updateTodo"
-          ></VTextField>
-        </VCardText>
-        <VCardActions>
-          <VSpacer />
-          <VBtn color="blue darken-1" @click="editDialog = false">{{ $t('no') }}</VBtn>
-          <VBtn color="blue darken-1" @click="updateTodo">{{ $t('yes') }}</VBtn>
-        </VCardActions>
-      </VCard>
-    </VDialog>
+    <WrapperDialog
+      :editDialog="editDialog"
+      @update:editDialog="editDialog = $event"
+      @updateTodo="updateTodo"
+    >
+      <VTextField
+        v-model="editTodoTitle"
+        :rules="baseRules"
+        :label="$t('todoList')"
+        class="border-2 border-purple child:text-purple rounded-md w-[350px]"
+        color="white"
+        hide-details
+        :reverse="true"
+        :clearable="true"
+        @blur="validateEditTodoTitle"
+        @focus="validateEditTodoTitle"
+        @keyup.enter="updateTodo"
+      />
+    </WrapperDialog>
 
-    <VDialog v-model="removeDialog" persistent max-width="600px">
-      <VCard>
-        <VCardTitle class="text-h5">{{ $t('warningEditTodo') }}</VCardTitle>
-        <VCardActions>
-          <VSpacer />
-          <div>
-            <VBtn color="blue darken-1" @click="removeDialog = false">{{ $t('no') }}</VBtn>
-            <VBtn color="blue darken-1" @click="removeTodoConfirm">{{ $t('yes') }}</VBtn>
-          </div>
-        </VCardActions>
-      </VCard>
-    </VDialog>
+    <WrapperDialog
+      :edit-dialog="removeDialog"
+      @update:edit-dialog="removeDialog = $event"
+      @updateTodo="removeTodoConfirm"
+    >
+      <div class="flex items-center justify-center">
+        <VIcon
+          class="!flex !items-center !justify-center !text-8xl !text-yellow-600 border-2 !border-yellow-600 !p-20 rounded-full"
+          >mdi-alert</VIcon
+        >
+      </div>
+    </WrapperDialog>
+
     <WrapperSnackBar
       v-model:snackBar="snackBar"
       :snackbarText="snackbarText"
       :timeout="3000"
       :colorSet="colorSnackBar"
     />
-  </VCard> -->
+  </VCard>
+  <VBtn class="absolute right-0 -bottom-24 !shadow-none" icon color="#6c63ff">
+    <VIcon color="white">mdi-plus</VIcon>
+  </VBtn>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import WrapperSnackBar from 'wrapper/WrapperSnackBar'
+import WrapperDialog from 'wrapper/WrapperDialog.tsx'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import useHttp from '@/composables/useHttp'
-import WrapperSnackBar from 'wrapper/WrapperSnackBar.vue'
-import WrapperCard from 'wrapper/WrapperCard.tsx'
 import { useSnackbar } from '@/composables/useSnackBar'
 import { useLocalstorage } from '@/composables/useLocalstorage'
 import type { TodosInfo } from './type'
-import { VCardText } from 'vuetify/lib/components/index.mjs'
 
 const { t } = useI18n()
+
 const { width } = useResponsiveWidth()
 const { getApi, putApi, deleteApi, postApi } = useHttp()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 const { getLocalStorage } = useLocalstorage()
 
-const loaded = ref<boolean>(false)
-const loading = ref<boolean>(false)
-
-const items = ref<string[]>(['All', 'Complete', 'unComplete'])
+const selectCategory = ref<string>('All')
+const categories = ref<string[]>(['All', 'Complete', 'UnComplete'])
 
 const todoTitle = ref<string>('')
+const checkBoxTodo = ref<boolean>(false)
 const todos = ref<TodosInfo[]>([])
 
 const editDialog = ref(false)
@@ -151,24 +146,15 @@ const idUsername = ref<string | null>(getLocalStorage('id'))
 const todoTitleRules = ref<any[]>([])
 const editTodoTitleRules = ref<any[]>([])
 
-const onClick = () => {
-  loading.value = true
-
-  setTimeout(() => {
-    loading.value = false
-    loaded.value = true
-  }, 2000)
-}
-
 const baseRules = [
   (value: string | null) => !!value || t('require'),
   (value: string | null) => (value && value.length >= 4) || t('minCharacter'),
-  (value: string | null) => (value && value.length <= 10) || t('maxCharacters')
+  (value: string | null) => (value && value.length <= 12) || t('maxCharacters')
 ]
 
-const isValid = computed(() => {
-  return baseRules.every((rule) => rule(todoTitle.value) === true)
-})
+const isValid = (title: string | null) => {
+  return baseRules.every((rule) => rule(title) === true)
+}
 
 const validateTodoTitle = () => {
   todoTitleRules.value = baseRules
@@ -190,9 +176,10 @@ const addButton = async () => {
   const newTodo = {
     id: crypto.randomUUID(),
     profileId: idUsername.value,
-    title: todoTitle.value
+    title: todoTitle.value,
+    isCompleted: false
   }
-  if (isValid.value) {
+  if (isValid(todoTitle.value)) {
     try {
       await postApi(`todos`, newTodo).then(() => {
         getTodos()
@@ -230,22 +217,47 @@ const editTodo = (todo: TodosInfo) => {
   editDialog.value = true
 }
 
-const updateTodo = async () => {
+const updateTodo = async (todo: TodosInfo) => {
   const title = {
     title: editTodoTitle.value.trim(),
-    profileId: idUsername.value
+    profileId: idUsername.value,
+    isCompleted: todo.isCompleted
   }
+
   if (title && editTodoId) {
     try {
-      await putApi(`todos/${editTodoId}`, title).then(() => {
-        getTodos()
-        showSnackbar(t('successEdit'), 'success')
-      })
+      if (isValid(editTodoTitle.value)) {
+        await putApi(`todos/${editTodoId}`, title).then(() => {
+          getTodos()
+          showSnackbar(t('successEdit'), 'success')
+        })
+      } else {
+        showSnackbar(t('warningEditTodo'), 'warning')
+      }
     } catch {
       showSnackbar(t('error'), 'error')
     }
   }
   editDialog.value = false
+}
+
+const editTodoCompleted = async (todo: TodosInfo) => {
+  const title = {
+    title: todo.title.trim(),
+    profileId: idUsername.value,
+    isCompleted: !todo.isCompleted
+  }
+  console.log('title', title)
+
+  try {
+    await putApi(`todos/${todo.id}`, title).then((data) => {
+      console.log('title', data)
+      getTodos()
+      showSnackbar(t('successEdit'), 'success')
+    })
+  } catch {
+    showSnackbar('error', 'error')
+  }
 }
 
 onMounted(() => {
