@@ -34,6 +34,13 @@
       "phoneNumber": "09132128877",
       "lang": "Persian",
       "id": "06a11a08-9d05-4c65-b78d-89d5a45a1f34"
+    },
+    {
+      "id": "5db0dd14-ba4e-403a-b043-982c924f0b45",
+      "username": "danial",
+      "password": "1234",
+      "phoneNumber": "09116665522",
+      "lang": "English"
     }
   ],
   "todos": [

@@ -5,7 +5,7 @@
         <VCardItem>
           <VTextField
             v-model="username"
-            :rules="usernameRules"
+            :rules="baseRules"
             :label="$t('username')"
             :class="[
               'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
@@ -17,8 +17,8 @@
             prepend-inner-icon="mdi-account"
             clearable
             hide-details
-            @blur="validateUsername"
-            @focus="validateUsername"
+            @blur="validationBase"
+            @focus="validationBase"
             @keyup.enter="registerHandler"
           />
         </VCardItem>
@@ -26,7 +26,7 @@
           <VTextField
             v-model="password"
             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-            :rules="passwordRules"
+            :rules="baseRules"
             :label="$t('password')"
             :class="[
               'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
@@ -40,15 +40,15 @@
             clearable
             hide-details
             @click:append-inner="visible = !visible"
-            @blur="validatePassword"
-            @focus="validatePassword"
+            @blur="validationBase"
+            @focus="validationBase"
             @keyup.enter="registerHandler"
           />
         </VCardItem>
         <VCardItem>
           <VTextField
             v-model="phoneNumber"
-            :rules="phoneNumberRules"
+            :rules="phoneRules"
             :label="$t('phoneNumber')"
             :class="[
               'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
@@ -66,7 +66,7 @@
           />
         </VCardItem>
         <VCardItem>
-          <VBtn width="30%" color="info" :disabled="!isValid" @click="registerHandler">{{
+          <VBtn width="30%" color="info" :disabled="!isValidationPhone" @click="registerHandler">{{
             $t('register')
           }}</VBtn>
         </VCardItem>
@@ -82,13 +82,14 @@
 </template>
     
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import WrapperSnackBar from 'wrapper/WrapperSnackBar'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import { useSnackbar } from '@/composables/useSnackBar'
 import { useLocalstorage } from '@/composables/useLocalstorage'
+import { useRules } from '@/composables/useRules'
 import useHttp from '@/composables/useHttp'
 import router from '@/views'
 
@@ -98,45 +99,16 @@ const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 const { setLocalStorage } = useLocalstorage()
 const { postApi } = useHttp()
+const {baseRules,isValidationPhone,phoneRules,validatePhoneNumber,validationBase} = useRules()
 
 const username = ref<string>('')
 const password = ref<string>('')
 const phoneNumber = ref<number>()
 const visible = ref<boolean>(false)
 
-const usernameRules = ref<any[]>([])
-const passwordRules = ref<any[]>([])
-const phoneNumberRules = ref<any[]>([])
-const phoneRegex = /^[0-9]{11}$/
-
-const baseRules = [
-  (value: string | null) => !!value || t('require'),
-  (value: string | null) => (value && value.length >= 4) || t('minCharacter'),
-  (value: string | null) => (value && value.length <= 12) || t('maxCharacter')
-]
-
-const phoneRules = [
-  (value: string) => !!value || 'Phone number is required',
-  (value: string) => phoneRegex.test(value) || 'Phone number must be 11 digits'
-]
-
-const validateUsername = () => {
-  usernameRules.value = baseRules
-}
-const validatePassword = () => {
-  passwordRules.value = baseRules
-}
-const validatePhoneNumber = () => {
-  phoneNumberRules.value = phoneRules
-}
-
-const isValid = computed(() => {
-  return baseRules.every((rule) => rule(username.value) === true && rule(password.value) === true)
-})
 
 const registerHandler = () => {
-  validateUsername()
-  validatePassword()
+  validationBase()
   validatePhoneNumber()
 
   const newProfile = {

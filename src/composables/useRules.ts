@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 export const useRules = () => {
+  const { t } = useI18n()
   const phoneRegex = /^09[0-9]{9}$/
   const usernameRules = ref<any[]>([])
   const phoneNumberRules = ref<any[]>([])
-const {t} = useI18n()
   const phoneRules = [
     (value: string) => !!value || t('phoneRequire'),
     (value: string) => phoneRegex.test(value) || t('phoneDigits')
@@ -23,7 +23,7 @@ const {t} = useI18n()
   }
 
   const validationBase = () => {
-      usernameRules.value = baseRules
+    usernameRules.value = baseRules
   }
   const validatePhoneNumber = () => {
     phoneNumberRules.value = phoneRules
