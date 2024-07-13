@@ -1,6 +1,6 @@
 <template>
   <VCard
-    class="text-center backdrop-blur-md !z-50 !shadow-none"
+    class="text-center backdrop-blur-md !z-50 shadow-xl"
     :title="$t('profile')"
     :width="width"
   >

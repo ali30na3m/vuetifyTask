@@ -30,7 +30,7 @@
           <VIcon @click="addButton">{{ locale === 'fa' ? '' : 'mdi-plus' }}</VIcon>
         </template>
       </VTextField>
-      <VBtn height="54px" size="large" color="#1867C0" @click="searchTodoPrompt">
+      <VBtn height="54px" color="#1867C0" @click="searchTodoPrompt">
         <VIcon color="white">mdi-magnify</VIcon>
       </VBtn>
       <VSelect

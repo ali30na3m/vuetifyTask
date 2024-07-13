@@ -4,7 +4,7 @@ export const logout = {
   component: () => import('./component/logoutCard.vue'),
   meta: {
     requiresAuth: true,
-    isSideBar: true,
+    isSideBar: false,
     icon: 'mdi-logout',
     localePath: '../views/Home/SubPages/Logout/locale'
   }

@@ -142,7 +142,7 @@ const password = ref<string>('')
 const phoneNumber = ref<string>('')
 const visible = ref<boolean>(false)
 
-const registerHandler = () => {
+const registerHandler = async() => {
   validationBase()
   validatePhoneNumber()
 

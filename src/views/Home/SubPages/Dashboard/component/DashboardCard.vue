@@ -48,7 +48,7 @@ onMounted(() => {
 }
 
 .v-list {
-  background: rgba(255, 255, 255, 0) !important;
+  background: rgba(255, 255, 255, 0.11) !important;
   color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
   -tw-backdrop-blur: blur(8px);
   backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast)

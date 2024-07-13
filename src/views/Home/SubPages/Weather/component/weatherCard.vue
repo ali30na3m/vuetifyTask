@@ -1,6 +1,6 @@
 <template>
   <VCard
-    class="text-center backdrop-blur-md shadow-none !z-50"
+    class="text-center backdrop-blur-md shadow-xl !z-50"
     :title="$t('weather').toUpperCase()"
     width="350px"
   >
