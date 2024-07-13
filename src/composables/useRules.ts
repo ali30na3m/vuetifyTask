@@ -1,29 +1,40 @@
-import { t } from "i18next"
-
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 export const useRules = () => {
-  const phoneRegex = /^[0-9]{11}$/
-
+  const phoneRegex = /^09[0-9]{9}$/
+  const usernameRules = ref<any[]>([])
+  const phoneNumberRules = ref<any[]>([])
+const {t} = useI18n()
   const phoneRules = [
-    (value: string) => !!value || 'Phone number is required',
-    (value: string) => phoneRegex.test(value) || 'Phone number must be 11 digits'
+    (value: string) => !!value || t('phoneRequire'),
+    (value: string) => phoneRegex.test(value) || t('phoneDigits')
   ]
-  const userRules = [
-    (value: string | null) => !!value || t('require'),
-    (value: string | null) => (value && value.length >= 4) || t('minCharacter'),
-    (value: string | null) => (value && value.length <= 12) || t('maxCharacters')
+  const baseRules = [
+    (value: string) => !!value || t('require'),
+    (value: string) => (value && value.length >= 4) || t('minCharacter'),
+    (value: string) => (value && value.length <= 12) || t('maxCharacters')
   ]
 
   const isValidationPhone = (title: string) => {
     return phoneRules.every((rule) => rule(title) === true)
   }
   const isValidationUser = (title: string) => {
-    return userRules.every((rule) => rule(title) === true)
+    return baseRules.every((rule) => rule(title) === true)
+  }
+
+  const validationBase = () => {
+      usernameRules.value = baseRules
+  }
+  const validatePhoneNumber = () => {
+    phoneNumberRules.value = phoneRules
   }
 
   return {
     phoneRules,
     isValidationPhone,
-    userRules,
-    isValidationUser
+    baseRules,
+    isValidationUser,
+    validationBase,
+    validatePhoneNumber
   }
 }

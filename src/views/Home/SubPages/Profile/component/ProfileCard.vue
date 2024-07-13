@@ -3,20 +3,20 @@
     <VCardText>
       <VTextField
         v-model="username"
-        :rules="userRules"
+        :rules="baseRules"
         :label="$t('username')"
         :class="[
-          ' rounded-md w-full my-2 border-2',
+          'child:text-purple rounded-md w-full my-2 border-2',
           theme.global.name.value === 'dark'
             ? 'border-white child:text-white'
             : 'border-purple child:text-purple'
         ]"
-        color="white"
+        :color="theme.global.name.value === 'dark' ? 'white' : ''"
         prepend-inner-icon="mdi-account"
         clearable
         hide-details
-        @blur="validateUsername"
-        @focus="validateUsername"
+        @blur="validationBase"
+        @focus="validationBase"
         @keyup.enter="submitHandler"
       />
       <VTextField
@@ -69,7 +69,7 @@
     />
   </VCard>
   <VBtn class="absolute right-0 -bottom-20 !shadow-none" icon color="#6c63ff">
-    <VIcon @click="openModal">mdi-account</VIcon>
+    <VIcon @click="openDiscription">mdi-account</VIcon>
   </VBtn>
   <WrapperDiscription
     v-model:show="showModal"
@@ -99,7 +99,14 @@ const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 const { getApi, putApi } = useHttp()
 const { setLocalStorage, getLocalStorage } = useLocalstorage()
-const { phoneRules, isValidationPhone, userRules, isValidationUser } = useRules()
+const {
+  validatePhoneNumber,
+  phoneRules,
+  isValidationPhone,
+  validationBase,
+  baseRules,
+  isValidationUser
+} = useRules()
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -111,17 +118,7 @@ const themes = ref<string[]>(['light', 'dark'])
 const id = ref<string | null>(getLocalStorage('id'))
 const showModal = ref<boolean>(false)
 
-const usernameRules = ref<any[]>([])
-const phoneNumberRules = ref<any[]>([])
-
-const validateUsername = () => {
-  usernameRules.value = userRules
-}
-const validatePhoneNumber = () => {
-  phoneNumberRules.value = phoneRules
-}
-
-const openModal = () => {
+const openDiscription = () => {
   showModal.value = true
 }
 
@@ -136,7 +133,7 @@ const getProfile = async () => {
 }
 
 const submitHandler = () => {
-  validateUsername()
+  validationBase()
   validatePhoneNumber()
   const newProfile = {
     username: username.value,
@@ -155,6 +152,8 @@ const submitHandler = () => {
         showSnackbar(t('successEdit'), 'success')
         getProfile()
       })
+    } else {
+      showSnackbar(t('error'), 'error')
     }
   } catch {
     showSnackbar(t('error'), 'error')

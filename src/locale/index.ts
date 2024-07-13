@@ -26,7 +26,9 @@ const messages = {
     yes: 'Yes',
     no: 'No',
     minCharacter: 'Min 4 characters',
-    maxCharacters: 'max 10 characters'
+    maxCharacters: 'max 10 characters',
+    phoneRequire:'Phone number is required',
+    phoneDigits: 'Phone number must be 11 digits'
   },
   fa: {
     AppBar: 'نوار برنامه',
@@ -47,14 +49,16 @@ const messages = {
     successAdd: 'با موفقیت اضافه شد',
     successDeleted: 'کار با موفقیت حذف شد',
     errorAdd: 'در اضافه کردن کار خطایی رخ داد',
-    maxAndMinCharacter:'تعداد کاراکتر بین 4 تا 12 می باشد',
+    maxAndMinCharacter:'تعداد کاراکتر بین 4 تا 12 باشد',
     noChangesModal: 'هیچ تغییری صورت نگرفت',
     error: 'خطا',
     require: 'الزامی',
     yes: 'بله',
     no: 'خیر',
     minCharacter: 'حداقل 4 حرف',
-    maxCharacters: 'حداکثر 10 حرف'
+    maxCharacters: 'حداکثر 10 حرف',
+    phoneRequire:'نوشتن شماره همراه الزامیه',
+    phoneDigits: 'شماره همراه باید 11 رقم باشد'
   }
 }
 

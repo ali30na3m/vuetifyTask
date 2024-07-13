@@ -11,14 +11,16 @@
         :rules="baseRules"
         :label="$t('todoList')"
         :class="[
-          'child:text-purple rounded-md w-[350px] border-2',
-          theme.global.name.value === 'dark' ? 'border-white' : 'border-purple'
+          'child:text-purple rounded-md w-[60%] my-2 border-2',
+          theme.global.name.value === 'dark'
+            ? 'border-white child:text-white'
+            : 'border-purple child:text-purple'
         ]"
-        color="white"
+        :color="theme.global.name.value === 'dark' ? 'white' : ''"
         clearable
         hide-details
-        @blur="validateTodoTitle"
-        @focus="validateTodoTitle"
+        @blur="validationBase"
+        @focus="validationBase"
         @keyup.enter="addButton"
       >
       </VTextField>
@@ -140,13 +142,16 @@
         :rules="baseRules"
         :label="$t('todoList')"
         :class="[
-          'child:text-purple rounded-md w-[350px] border-2',
-          theme.global.name.value === 'dark' ? 'border-white' : 'border-purple'
+          'child:text-purple rounded-md w-full my-2 border-2',
+          theme.global.name.value === 'dark'
+            ? 'border-white child:text-white'
+            : 'border-purple child:text-purple'
         ]"
-        color="white"
+        :color="theme.global.name.value === 'dark' ? 'white' : ''"
         hide-details
-        @blur="validateEditTodoTitle"
-        @focus="validateEditTodoTitle"
+        clearable
+        @blur="validationBase"
+        @focus="validationBase"
         @keyup.enter="updateTodo"
       />
     </WrapperDialog>
@@ -173,7 +178,7 @@
       <VTextField
         v-model="searchTodo"
         :rules="baseRules"
-        :label="$t('username')"
+        :label="$t('searchTodo')"
         :class="[
           ' rounded-md w-full my-2 border-2',
           theme.global.name.value === 'dark'
@@ -247,6 +252,7 @@ import useHttp from '@/composables/useHttp'
 import { useSnackbar } from '@/composables/useSnackBar'
 import { useLocalstorage } from '@/composables/useLocalstorage'
 import type { TodosInfo } from './type'
+import { useRules } from '@/composables/useRules'
 
 const { t } = useI18n()
 const theme = useTheme()
@@ -275,27 +281,11 @@ const removeDialog = ref(false)
 const idTodo = ref<string>('')
 const idUsername = ref<string | null>(getLocalStorage('id'))
 
-const todoTitleRules = ref<any[]>([])
-const editTodoTitleRules = ref<any[]>([])
-
-
-const baseRules = [
-  (value: string | null) => !!value || t('require'),
-  (value: string | null) => (value && value.length >= 4) || t('minCharacter'),
-  (value: string | null) => (value && value.length <= 12) || t('maxCharacters')
-]
-
-const isValid = (title: string | null) => {
-  return baseRules.every((rule) => rule(title) === true)
-}
-
-const validateTodoTitle = () => {
-  todoTitleRules.value = baseRules
-}
-
-const validateEditTodoTitle = () => {
-  editTodoTitleRules.value = baseRules
-}
+const {
+  validationBase,
+  baseRules,
+  isValidationUser
+} = useRules()
 
 const getTodos = async () => {
   await getApi(`profile/${idUsername.value}?_embed=todos`).then((data) => {
@@ -322,15 +312,14 @@ const searchHandler = () => {
 }
 
 const addButton = async () => {
-  validateTodoTitle()
-  validateEditTodoTitle()
+  validationBase()
   const newTodo = {
     id: crypto.randomUUID(),
     profileId: idUsername.value,
     title: todoTitle.value,
     isCompleted: false
   }
-  if (isValid(todoTitle.value)) {
+  if (isValidationUser(todoTitle.value)) {
     try {
       await postApi(`todos`, newTodo).then(() => {
         getTodos()
@@ -354,6 +343,7 @@ const removeTodoConfirm = async () => {
   try {
     await deleteApi(`todos/${idTodo.value}`).then(() => {
       showSnackbar(t('successDeleted'), 'success')
+      searchHandler()
       getTodos()
     })
     removeDialog.value = false
@@ -377,14 +367,14 @@ const updateTodo = async (todo: TodosInfo) => {
 
   if (title && editTodoId) {
     try {
-      if (isValid(editTodoTitle.value)) {
+      if (isValidationUser(editTodoTitle.value)) {
         await putApi(`todos/${editTodoId}`, title).then(() => {
           getTodos()
           searchHandler()
           showSnackbar(t('successEdit'), 'success')
         })
       } else {
-        showSnackbar(t('warningEditTodo'), 'warning')
+        showSnackbar(t('maxAndMinCharacter'), 'warning')
       }
     } catch {
       showSnackbar(t('error'), 'error')

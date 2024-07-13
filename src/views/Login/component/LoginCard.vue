@@ -5,7 +5,7 @@
         <VCardItem>
           <VTextField
             v-model="username"
-            :rules="usernameRules"
+            :rules="baseRules"
             :label="$t('username')"
             :class="[
               'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
@@ -17,8 +17,8 @@
             prepend-inner-icon="mdi-phone"
             clearable
             hide-details
-            @blur="validateUsername"
-            @focus="validateUsername"
+            @blur="validationBase"
+            @focus="validationBase"
             @keyup.enter="loginHandler"
           />
         </VCardItem>
@@ -26,7 +26,7 @@
           <VTextField
             v-model="password"
             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-            :rules="passwordRules"
+            :rules="baseRules"
             :label="$t('password')"
             :class="[
               'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
@@ -40,13 +40,13 @@
             clearable
             hide-details
             @click:append-inner="visible = !visible"
-            @blur="validatePassword"
-            @focus="validatePassword"
+            @blur="validationBase"
+            @focus="validationBase"
             @keyup.enter="loginHandler"
           />
         </VCardItem>
         <VCardItem>
-          <VBtn width="30%" color="info" @click="loginHandler" :disabled="!isValid">{{
+          <VBtn width="30%" color="info" @click="loginHandler" :disabled="!isValidationUser">{{
             $t('login')
           }}</VBtn>
         </VCardItem>
@@ -66,7 +66,7 @@
 
 <script lang="ts" setup>
 import { useTheme } from 'vuetify/lib/framework.mjs'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import WrapperSnackBar from 'wrapper/WrapperSnackBar'
@@ -74,6 +74,7 @@ import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import { useSnackbar } from '@/composables/useSnackBar'
 import { useLocalstorage } from '@/composables/useLocalstorage'
 import useHttp from '@/composables/useHttp'
+import { useRules } from '@/composables/useRules'
 import router from '@/views'
 import type { profileInfo } from '../type'
 
@@ -83,32 +84,12 @@ const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 const { setLocalStorage } = useLocalstorage()
 const { getApi } = useHttp()
+const {baseRules , validationBase , isValidationUser} = useRules()
 
 const registerDatas = ref<profileInfo[]>([])
 const username = ref<string>('')
 const password = ref<string>('')
 const visible = ref<boolean>(false)
-
-const usernameRules = ref<any[]>([])
-const passwordRules = ref<any[]>([])
-
-const baseRules = [
-  (value: string | null) => !!value || t('require'),
-  (value: string | null) => (value && value.length >= 4) || t('minCharacter'),
-  (value: string | null) => (value && value.length <= 10) || t('maxCharacter')
-]
-
-const validateUsername = () => {
-  usernameRules.value = baseRules
-}
-
-const validatePassword = () => {
-  passwordRules.value = baseRules
-}
-
-const isValid = computed(() => {
-  return baseRules.every((rule) => rule(username.value) === true && rule(password.value) === true)
-})
 
 const getProfile = async () => {
   try {
@@ -121,7 +102,7 @@ const getProfile = async () => {
 }
 
 const loginHandler = () => {
-  if (!isValid.value) {
+  if (!isValidationUser) {
     showSnackbar(t('error'), 'error')
     return
   }
