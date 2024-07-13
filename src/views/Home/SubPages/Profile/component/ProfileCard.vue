@@ -18,12 +18,15 @@
         :color="theme.global.name.value === 'dark' ? 'white' : ''"
         :reverse="locale == 'fa' ? true : false"
         :prepend-inner-icon="locale == 'fa' ? '' : 'mdi-account'"
-        :append-inner-icon="locale == 'fa' ? 'mdi-account !left-0' : ''"
+        :append-inner-icon="locale == 'fa' ? 'mdi-account' : ''"
         hide-details
         @keyup.enter="submitHandler"
       >
-        <template v-slot:clear>
+        <template v-if="locale == 'fa'" v-slot:prepend-inner>
           <VIcon @click="username = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+        </template>
+        <template v-else v-slot:append-inner>
+          <VIcon @click="username = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
         </template>
       </VTextField>
       <VTextField
@@ -38,12 +41,19 @@
         ]"
         :color="theme.global.name.value === 'dark' ? 'white' : ''"
         :reverse="locale == 'fa' ? true : false"
-        prepend-inner-icon="mdi-phone"
+        :prepend-inner-icon="locale == 'fa' ? '' : 'mdi-phone'"
+        :append-inner-icon="locale == 'fa' ? 'mdi-phone' : ''"
         type="tel"
-        clearable
         hide-details
         @keyup.enter="submitHandler"
-      />
+      >
+        <template v-if="locale == 'fa'" v-slot:prepend-inner>
+          <VIcon @click="phoneNumber = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+        </template>
+        <template v-else v-slot:append-inner>
+          <VIcon @click="phoneNumber = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+        </template>
+      </VTextField>
       <VSelect
         v-model="langSelect"
         :items="languages"
@@ -166,40 +176,39 @@ const getProfile = async () => {
 }
 
 const submitHandler = async () => {
-  validationBase();
-  validatePhoneNumber();
+  validationBase()
+  validatePhoneNumber()
   const newProfile = {
     username: username.value,
     password: password.value,
     phoneNumber: phoneNumber.value,
     lang: langSelect.value,
-    lastTimeUpdated: new Date().toISOString(),
-  };
+    lastTimeUpdated: new Date().toISOString()
+  }
 
   try {
     if (isValidationUser(username.value) && isValidationPhone(phoneNumber.value)) {
-      await putApi(`profile/${id.value}`, newProfile);
+      await putApi(`profile/${id.value}`, newProfile)
       setLocalStorage(
         'theme',
         themeSelect.value === 'دارک' || themeSelect.value === 'dark' ? 'dark' : 'light'
-      );
-      setLocalStorage('username', username.value);
+      )
+      setLocalStorage('username', username.value)
       setLocalStorage(
         'lang',
         langSelect.value === 'English' || langSelect.value === 'انگلیسی' ? 'en' : 'fa'
-      );
-      theme.global.name.value = themeSelect.value;
-      locale.value = langSelect.value === 'English' ? 'en' : 'fa';
-      showSnackbar(t('successEdit'), 'success');
+      )
+      theme.global.name.value = themeSelect.value
+      locale.value = langSelect.value === 'English' ? 'en' : 'fa'
+      showSnackbar(t('successEdit'), 'success')
       await getProfile()
     } else {
-      showSnackbar(t('inValidUserAndPassword'), 'error');
+      showSnackbar(t('inValidUserAndPassword'), 'error')
     }
   } catch {
-    showSnackbar(t('errorPut'), 'error');
+    showSnackbar(t('errorPut'), 'error')
   }
-};
-
+}
 
 onMounted(() => {
   getProfile()

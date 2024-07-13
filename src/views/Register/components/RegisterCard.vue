@@ -1,7 +1,12 @@
 <template>
   <VContainer class="flex items-center justify-center h-[95vh]">
     <div class="relative flex items-center justify-center">
-      <VCard class="text-center backdrop-blur-md !z-50 shadow-lg" :title="$t('register')" height="" :width="width">
+      <VCard
+        class="text-center backdrop-blur-md !z-50 shadow-lg"
+        :title="$t('register')"
+        height=""
+        :width="width"
+      >
         <VCardItem>
           <VTextField
             v-model="username"
@@ -14,18 +19,23 @@
                 : 'border-[#1867C0] child:text-[#1867C0]'
             ]"
             :color="theme.global.name.value === 'dark' ? 'white' : ''"
-            prepend-inner-icon="mdi-account"
-            clearable
+            :prepend-inner-icon="locale === 'fa' ? '' : 'mdi-account'"
+            :append-inner-icon="locale === 'fa' ? 'mdi-account' : ''"
+            :reverse="locale === 'fa' ? true : false"
             hide-details
-            @blur="validationBase"
-            @focus="validationBase"
             @keyup.enter="registerHandler"
-          />
+          >
+            <template v-if="locale == 'fa'" v-slot:prepend-inner>
+              <VIcon @click="username = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+            </template>
+            <template v-else v-slot:append-inner>
+              <VIcon @click="username = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+            </template>
+          </VTextField>
         </VCardItem>
         <VCardItem>
           <VTextField
             v-model="password"
-            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :rules="baseRules"
             :label="$t('password')"
             :class="[
@@ -36,12 +46,19 @@
             ]"
             :color="theme.global.name.value === 'dark' ? 'white' : ''"
             :type="visible ? 'text' : 'password'"
-            prepend-inner-icon="mdi-lock"
-            clearable
+            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+            :reverse="locale === 'fa' ? true : false"
             hide-details
             @click:append-inner="visible = !visible"
             @keyup.enter="registerHandler"
-          />
+          >
+            <template v-if="locale == 'fa'" v-slot:prepend-inner>
+              <VIcon @click="password = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+            </template>
+            <template v-else v-slot:append-inner>
+              <VIcon @click="password = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+            </template>
+          </VTextField>
         </VCardItem>
         <VCardItem>
           <VTextField
@@ -55,15 +72,21 @@
                 : 'border-[#1867C0] child:text-[#1867C0]'
             ]"
             :color="theme.global.name.value === 'dark' ? 'white' : ''"
-            prepend-inner-icon="mdi-phone"
+            :prepend-inner-icon="locale === 'fa' ? '' : 'mdi-phone'"
+            :append-inner-icon="locale === 'fa' ? 'mdi-phone' : ''"
+            :reverse="locale === 'fa' ? true : false"
             inputmode="numeric"
             type="tel"
-            clearable
             hide-details
-            @blur="validatePhoneNumber"
-            @focus="validatePhoneNumber"
             @keyup.enter="registerHandler"
-          />
+          >
+            <template v-if="locale == 'fa'" v-slot:prepend-inner>
+              <VIcon @click="phoneNumber = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+            </template>
+            <template v-else v-slot:append-inner>
+              <VIcon @click="phoneNumber = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+            </template>
+          </VTextField>
         </VCardItem>
         <VCardItem>
           <VBtn width="30%" color="info" :disabled="!isValidationPhone" @click="registerHandler">{{
@@ -100,16 +123,23 @@ import useHttp from '@/composables/useHttp'
 import router from '@/views'
 
 const theme = useTheme()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 const { setLocalStorage } = useLocalstorage()
 const { postApi } = useHttp()
-const { baseRules, isValidationPhone, phoneRules, validatePhoneNumber, validationBase } = useRules()
+const {
+  baseRules,
+  isValidationPhone,
+  phoneRules,
+  validatePhoneNumber,
+  validationBase,
+  isValidationUser
+} = useRules()
 
 const username = ref<string>('')
 const password = ref<string>('')
-const phoneNumber = ref<number>()
+const phoneNumber = ref<string>('')
 const visible = ref<boolean>(false)
 
 const registerHandler = () => {
@@ -123,7 +153,11 @@ const registerHandler = () => {
     phoneNumber: phoneNumber.value,
     lang: 'English'
   }
-  if (username.value.trim() && password.value.trim() && phoneNumber.value) {
+  if (
+    isValidationUser(username.value.trim()) &&
+    isValidationUser(password.value.trim()) &&
+    isValidationPhone(phoneNumber.value.trim())
+  ) {
     try {
       postApi(`profile`, newProfile).then(() => {
         setLocalStorage('id', newProfile.id)
@@ -136,6 +170,8 @@ const registerHandler = () => {
     } catch {
       showSnackbar(t('error'), 'error')
     }
+  } else {
+    showSnackbar(t('error'), 'error')
   }
 }
 </script>

@@ -18,18 +18,23 @@
                 : 'border-[#1867C0] child:text-[#1867C0]'
             ]"
             :color="theme.global.name.value === 'dark' ? 'white' : ''"
-            prepend-inner-icon="mdi-phone"
-            clearable
+            :prepend-inner-icon="locale === 'fa' ? '' : 'mdi-phone'"
+            :append-inner-icon="locale === 'fa' ? 'mdi-phone' : ''"
+            :reverse="locale === 'fa' ? true : false"
             hide-details
-            @blur="validationBase"
-            @focus="validationBase"
             @keyup.enter="loginHandler"
-          />
+          >
+            <template v-if="locale == 'fa'" v-slot:prepend-inner>
+              <VIcon @click="username = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+            </template>
+            <template v-else v-slot:append-inner>
+              <VIcon @click="username = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+            </template>
+          </VTextField>
         </VCardItem>
         <VCardItem>
           <VTextField
             v-model="password"
-            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :rules="baseRules"
             :label="$t('password')"
             :class="[
@@ -40,14 +45,21 @@
             ]"
             :color="theme.global.name.value === 'dark' ? 'white' : ''"
             :type="visible ? 'text' : 'password'"
+            :reverse="locale === 'fa' ? true : false"
             prepend-inner-icon="mdi-lock"
-            clearable
+            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             hide-details
-            @click:append-inner="visible = !visible"
-            @blur="validationBase"
-            @focus="validationBase"
+            @click:append-inner="(visible = !visible)"
+            @click:prepend-inner="(visible = !visible) "
             @keyup.enter="loginHandler"
-          />
+          >
+            <template v-if="locale == 'fa'" v-slot:prepend-inner>
+              <VIcon @click="password = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+            </template>
+            <template v-else v-slot:append-inner>
+              <VIcon @click="password = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+            </template>
+          </VTextField>
         </VCardItem>
         <VCardItem>
           <VBtn width="30%" color="info" @click="loginHandler" :disabled="!isValidationUser">{{
@@ -89,7 +101,7 @@ import router from '@/views'
 import type { profileInfo } from '../type'
 
 const theme = useTheme()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 const { setLocalStorage } = useLocalstorage()

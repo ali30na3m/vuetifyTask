@@ -16,15 +16,16 @@ export default defineComponent({
         headerTitle : {
             type: String,
             required: true,
-        }
+        },
     },
-    emits: ['update:isOpenDialog', 'updateTodo'],
+    emits: ['update:isOpenDialog', 'updateTodo','inputTitle'],
     setup(props, { emit, slots }) {
         const theme = useTheme();
         const {t} = useI18n()
 
         const closeDialog = () => {
             emit('update:isOpenDialog', false);
+            emit('inputTitle','')
         };
 
         const updateTodo = () => {

@@ -11,17 +11,28 @@
         :rules="baseRules"
         :label="$t('todoList')"
         :class="[
-          'rounded-md w-[60%] my-2 border-2',
+          'rounded-md w-[50%] my-2 border-2',
           theme.global.name.value === 'dark'
             ? 'border-white child:text-white'
             : 'border-[#1867C0] child:text-black'
         ]"
         :color="theme.global.name.value === 'dark' ? 'white' : ''"
-        clearable
+        :reverse="locale === 'fa' ? true : false"
         hide-details
         @keyup.enter="addButton"
       >
+        <template v-if="locale == 'fa'" v-slot:prepend-inner>
+          <VIcon @click="todoTitle = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+          <VIcon @click="addButton">{{ locale === 'fa' ? 'mdi-plus' : '' }}</VIcon>
+        </template>
+        <template v-else v-slot:append-inner>
+          <VIcon @click="todoTitle = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+          <VIcon @click="addButton">{{ locale === 'fa' ? '' : 'mdi-plus' }}</VIcon>
+        </template>
       </VTextField>
+      <VBtn height="54px" size="large" color="#1867C0" @click="searchTodoPrompt">
+        <VIcon color="white">mdi-magnify</VIcon>
+      </VBtn>
       <VSelect
         v-model="selectCategory"
         :items="categories"
@@ -32,103 +43,14 @@
       />
     </div>
 
-    <div class="mt-8 px-3 w-full">
-      <div class="flex items-center justify-center w-full" v-if="todos.length === 0">
-        <img class="w-[200px] h-[200px]" src="../../../../../assets/images/19.jpg" alt="no todos" />
-      </div>
-      <div v-else v-for="todo in todos" :key="todo.id" class="py-3">
-        <div
-          v-if="selectCategory === 'All'"
-          class="flex items-center justify-between w-full border-b-2 border-[#1867C0]"
-        >
-          <div class="flex items-center">
-            <VCheckbox
-              v-model="todo.isCompleted"
-              :value="!checkBoxTodo"
-              color="indigo-darken-3"
-              hide-details
-              @click="editTodoCompleted(todo)"
-            />
-            <p
-              :class="[
-                'flex items-center justify-center',
-                todo.isCompleted ? 'line-through text-gray-300' : ''
-              ]"
-            >
-              {{ todo.title }}
-            </p>
-          </div>
-          <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
-            <VBtn icon class="!shadow-none" @click="editTodoPropmt(todo)">
-              <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
-            </VBtn>
-            <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
-              <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
-            </VBtn>
-          </div>
-        </div>
-        <div
-          v-if="selectCategory === 'Complete' && todo.isCompleted === true"
-          class="flex items-center justify-between border-b-2 border-[#1867C0]"
-        >
-          <div class="flex items-center">
-            <VCheckbox
-              v-model="todo.isCompleted"
-              :value="!checkBoxTodo"
-              color="indigo-darken-3"
-              hide-details
-              @click="editTodoCompleted(todo)"
-            />
-            <p
-              :class="[
-                'flex items-center justify-center',
-                todo.isCompleted ? 'line-through text-gray-300' : ''
-              ]"
-            >
-              {{ todo.title }}
-            </p>
-          </div>
-          <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
-            <VBtn icon class="!shadow-none" @click="editTodoPropmt(todo)">
-              <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
-            </VBtn>
-            <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
-              <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
-            </VBtn>
-          </div>
-        </div>
-        <div
-          v-if="selectCategory === 'UnComplete' && !todo.isCompleted"
-          class="flex items-center justify-between border-b-2 border-[#1867C0]"
-        >
-          <div class="flex items-center">
-            <VCheckbox
-              v-model="todo.isCompleted"
-              :value="!checkBoxTodo"
-              color="indigo-darken-3"
-              hide-details
-              @click="editTodoCompleted(todo)"
-            />
-            <p
-              :class="[
-                'flex items-center justify-center',
-                todo.isCompleted ? 'line-through text-gray-300' : ''
-              ]"
-            >
-              {{ todo.title }}
-            </p>
-          </div>
-          <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
-            <VBtn icon class="!shadow-none" @click="editTodoPropmt(todo)">
-              <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
-            </VBtn>
-            <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
-              <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
-            </VBtn>
-          </div>
-        </div>
-      </div>
-    </div>
+    <TodoStore
+      :todos="todos"
+      :checkBoxTodo="checkBoxTodo"
+      :category="selectCategory"
+      @editTodoCompleted="editTodoCompleted"
+      @editTodoPropmt="editTodoPropmt"
+      @removeTodoPrompt="removeTodoPrompt"
+    />
 
     <WrapperDialog
       :isOpenDialog="editDialog"
@@ -147,12 +69,17 @@
             : 'border-[#1867C0] child:text-[#1867C0]'
         ]"
         :color="theme.global.name.value === 'dark' ? 'white' : ''"
+        :reverse="locale === 'fa' ? true : false"
         hide-details
-        clearable
-        @blur="validationBase"
-        @focus="validationBase"
         @keyup.enter="updateTodo"
-      />
+      >
+        <template v-if="locale == 'fa'" v-slot:prepend-inner>
+          <VIcon @click="editTodoTitle = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+        </template>
+        <template v-else v-slot:append-inner>
+          <VIcon @click="editTodoTitle = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+        </template>
+      </VTextField>
     </WrapperDialog>
     <WrapperDialog
       :isOpenDialog="removeDialog"
@@ -170,8 +97,9 @@
     <WrapperDialog
       :isOpenDialog="searchDialog"
       :headerTitle="$t('searchTodo')"
+      @inputTitle="handleInputTitle"
       @update:isOpenDialog="searchDialog = $event"
-      @updateTodo="updateTodo"
+      @updateTodo="searchDialog = $event"
     >
       <VTextField
         v-model="searchTodo"
@@ -184,14 +112,25 @@
             : 'border-[#1867C0] child:text-[#1867C0]'
         ]"
         color="white"
-        prepend-inner-icon="mdi-magnify"
-        clearable
+        :prepend-inner-icon="locale === 'fa' ? '' : 'mdi-magnify'"
+        :append-inner-icon="locale === 'fa' ? 'mdi-magnify' : ''"
+        :reverse="locale === 'fa' ? true : false"
         hide-details
         @keyup.enter="searchHandler"
-      />
+      >
+        <template v-if="locale == 'fa'" v-slot:prepend-inner>
+          <VIcon @click="searchTodo = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
+          <VIcon @click="searchHandler">{{ locale === 'fa' ? 'mdi-magnify' : '' }}</VIcon>
+        </template>
+        <template v-else v-slot:append-inner>
+          <VIcon @click="searchTodo = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
+          <VIcon @click="searchHandler">{{ locale === 'fa' ? '' : 'mdi-magnify' }}</VIcon>
+        </template>
+      </VTextField>
       <div
         v-for="todo in searchTodos"
         :key="todo.id"
+        :dir="locale === 'fa' ? 'rtl' : 'ltr'"
         class="flex items-center justify-between w-full border-b-2 border-[#1867C0]"
       >
         <div class="flex items-center">
@@ -221,6 +160,7 @@
         </div>
       </div>
     </WrapperDialog>
+
     <WrapperSnackBar
       v-model:snackBar="snackBar"
       :snackbarText="snackbarText"
@@ -228,14 +168,6 @@
       :colorSet="colorSnackBar"
     />
   </VCard>
-  <VBtn
-    class="absolute left-0 -bottom-20 !shadow-none"
-    icon
-    color="#1867C0"
-    @click="searchTodoPrompt"
-  >
-    <VIcon color="white">mdi-magnify</VIcon>
-  </VBtn>
   <div
     :class="[
       locale == 'fa' ? '-right-20' : ' -left-20',
@@ -254,14 +186,15 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTheme } from 'vuetify/lib/framework.mjs'
+import TodoStore from './TodosStore.vue'
 import WrapperSnackBar from 'wrapper/WrapperSnackBar'
 import WrapperDialog from 'wrapper/WrapperDialog.tsx'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import useHttp from '@/composables/useHttp'
 import { useSnackbar } from '@/composables/useSnackBar'
 import { useLocalstorage } from '@/composables/useLocalstorage'
-import type { TodosInfo } from './type'
 import { useRules } from '@/composables/useRules'
+import type { TodosInfo } from './type'
 
 const { locale, t } = useI18n()
 const theme = useTheme()
@@ -301,6 +234,12 @@ const getTodos = async () => {
 const searchTodoPrompt = async () => {
   searchDialog.value = true
 }
+
+const handleInputTitle = (title: string) => {
+  searchTodos.value = []
+  searchTodo.value = title;
+};
+
 
 const searchHandler = () => {
   if (searchTodo.value) {
@@ -375,7 +314,6 @@ const updateTodo = async (todo: TodosInfo) => {
       if (isValidationUser(editTodoTitle.value)) {
         await putApi(`todos/${editTodoId}`, title).then(() => {
           getTodos()
-          searchHandler()
           showSnackbar(t('successEdit'), 'success')
         })
       } else {
@@ -385,6 +323,7 @@ const updateTodo = async (todo: TodosInfo) => {
       showSnackbar(t('error'), 'error')
     }
   }
+  searchHandler()
   editDialog.value = false
 }
 

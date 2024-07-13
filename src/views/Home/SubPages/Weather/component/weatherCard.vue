@@ -2,7 +2,7 @@
   <VCard
     class="text-center backdrop-blur-md shadow-none !z-50"
     :title="$t('weather').toUpperCase()"
-    :width="width"
+    width="350px"
   >
     <VCardText>
       <VSelect
@@ -26,9 +26,17 @@
     </VList>
     <VList v-else>
       <div
-        class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:flex child:items-center child:justify-between child:py-2 child:border-b-2 child:border-[#1867C0]"
+        class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:flex child:items-center child:justify-center child:py-2"
       >
-        <div>
+        <h3>{{ citySelect }}</h3>
+        <h3>
+          {{ weatherDetails.current_weather.temperature }}
+          {{ weatherDetails.current_weather_units.temperature }}
+        </h3>
+        <h3>
+          {{ weatherDescription[0] }}
+        </h3>
+        <!-- <div>
           <h3>
             <VIcon>mdi-weather-windy</VIcon>
             {{ $t('windSpeed') }}:
@@ -58,14 +66,16 @@
           <p>
             {{ weatherDescription[0] }}
           </p>
-        </div>
+        </div> -->
       </div>
     </VList>
   </VCard>
-  <div class="absolute -top-20 -left-20 bg-gradient-to-r from-cyan-500 to-cyan-800 w-[200px] h-[200px] rounded-full">
-  </div>
-  <div class="absolute -bottom-20 -right-20 bg-gradient-to-r from-blue-500 to-blue-800 w-[200px] h-[200px] rounded-full">
-  </div>
+  <div
+    class="absolute -top-20 -left-20 bg-gradient-to-r from-cyan-500 to-cyan-800 w-[200px] h-[200px] rounded-full"
+  ></div>
+  <div
+    class="absolute -bottom-20 -right-20 bg-gradient-to-r from-blue-500 to-blue-800 w-[200px] h-[200px] rounded-full"
+  ></div>
 </template>
 
 <script lang="ts" setup>
@@ -214,10 +224,12 @@ p {
   color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
 }
 
-.v-list{
+.v-list {
   background: rgba(255, 255, 255, 0) !important;
   color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
   -tw-backdrop-blur: blur(8px);
-    backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia) !important; 
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast)
+    var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia) !important;
 }
 </style>

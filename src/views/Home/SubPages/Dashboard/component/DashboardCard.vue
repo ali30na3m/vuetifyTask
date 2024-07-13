@@ -5,8 +5,8 @@
     :width="width"
   >
     <div class="flex flex-col items-center justify-center gap-7 my-4 child:w-[50%]">
-      <p class="border-b-2 border-[#1867C0] !text-3xl">{{ currentDate }}</p>
-      <p class="border-b-2 border-[#1867C0] !text-2xl">{{ username }} , {{ greetingToUser() }}</p>
+      <p class="!text-3xl">{{ currentDate }}</p>
+      <p class="!text-2xl">{{ username }} , {{ greetingToUser() }}</p>
     </div>
   </VCard>
   <div
