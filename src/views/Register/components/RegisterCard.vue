@@ -1,17 +1,17 @@
 <template>
   <VContainer class="flex items-center justify-center h-[95vh]">
-    <div class="flex items-center justify-center">
-      <VCard class="text-center" :title="$t('register')" height="" :width="width">
+    <div class="relative flex items-center justify-center">
+      <VCard class="text-center backdrop-blur-md !z-50 shadow-lg" :title="$t('register')" height="" :width="width">
         <VCardItem>
           <VTextField
             v-model="username"
             :rules="baseRules"
             :label="$t('username')"
             :class="[
-              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
+              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
               theme.global.name.value === 'dark'
                 ? 'border-white child:text-white'
-                : 'border-purple child:text-purple'
+                : 'border-[#1867C0] child:text-[#1867C0]'
             ]"
             :color="theme.global.name.value === 'dark' ? 'white' : ''"
             prepend-inner-icon="mdi-account"
@@ -29,10 +29,10 @@
             :rules="baseRules"
             :label="$t('password')"
             :class="[
-              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
+              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
               theme.global.name.value === 'dark'
                 ? 'border-white child:text-white'
-                : 'border-purple child:text-purple'
+                : 'border-[#1867C0] child:text-[#1867C0]'
             ]"
             :color="theme.global.name.value === 'dark' ? 'white' : ''"
             :type="visible ? 'text' : 'password'"
@@ -40,8 +40,6 @@
             clearable
             hide-details
             @click:append-inner="visible = !visible"
-            @blur="validationBase"
-            @focus="validationBase"
             @keyup.enter="registerHandler"
           />
         </VCardItem>
@@ -51,13 +49,15 @@
             :rules="phoneRules"
             :label="$t('phoneNumber')"
             :class="[
-              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-purple',
+              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
               theme.global.name.value === 'dark'
                 ? 'border-white child:text-white'
-                : 'border-purple child:text-purple'
+                : 'border-[#1867C0] child:text-[#1867C0]'
             ]"
             :color="theme.global.name.value === 'dark' ? 'white' : ''"
             prepend-inner-icon="mdi-phone"
+            inputmode="numeric"
+            type="tel"
             clearable
             hide-details
             @blur="validatePhoneNumber"
@@ -71,6 +71,12 @@
           }}</VBtn>
         </VCardItem>
       </VCard>
+      <div
+        class="absolute -top-20 -left-20 bg-gradient-to-r from-cyan-500 to-cyan-800 w-[200px] h-[200px] rounded-full"
+      ></div>
+      <div
+        class="absolute -bottom-20 -right-20 bg-gradient-to-r from-blue-500 to-blue-800 w-[200px] h-[200px] rounded-full"
+      ></div>
     </div>
     <WrapperSnackBar
       v-model:snackBar="snackBar"
@@ -99,13 +105,12 @@ const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 const { setLocalStorage } = useLocalstorage()
 const { postApi } = useHttp()
-const {baseRules,isValidationPhone,phoneRules,validatePhoneNumber,validationBase} = useRules()
+const { baseRules, isValidationPhone, phoneRules, validatePhoneNumber, validationBase } = useRules()
 
 const username = ref<string>('')
 const password = ref<string>('')
 const phoneNumber = ref<number>()
 const visible = ref<boolean>(false)
-
 
 const registerHandler = () => {
   validationBase()
@@ -134,3 +139,19 @@ const registerHandler = () => {
   }
 }
 </script>
+
+<style scoped>
+.v-card--variant-elevated {
+  background: rgba(255, 255, 255, 0.11) !important;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+}
+
+.v-list {
+  background: rgba(255, 255, 255, 0) !important;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  -tw-backdrop-blur: blur(8px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast)
+    var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia) !important;
+}
+</style>

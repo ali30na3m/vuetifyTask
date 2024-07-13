@@ -1,9 +1,9 @@
 <template>
   <VCard
-    class="text-center !shadow-none !overflow-y-auto"
+    class="text-center backdrop-blur-md !z-50 shadow-xl !overflow-y-auto"
     :title="$t('todoList').toLocaleUpperCase()"
     :width="width"
-    height="450px"
+    height="400px"
   >
     <div class="flex items-center gap-4 w-full px-3">
       <VTextField
@@ -11,23 +11,22 @@
         :rules="baseRules"
         :label="$t('todoList')"
         :class="[
-          'child:text-purple rounded-md w-[60%] my-2 border-2',
+          'rounded-md w-[60%] my-2 border-2',
           theme.global.name.value === 'dark'
             ? 'border-white child:text-white'
-            : 'border-purple child:text-purple'
+            : 'border-[#1867C0] child:text-black'
         ]"
         :color="theme.global.name.value === 'dark' ? 'white' : ''"
         clearable
         hide-details
-        @blur="validationBase"
-        @focus="validationBase"
         @keyup.enter="addButton"
       >
       </VTextField>
       <VSelect
         v-model="selectCategory"
         :items="categories"
-        class="text-white bg-[#6c63ff] rounded-md w-10"
+        class="text-white rounded-md w-10"
+        bg-color="primary"
         single-line
         hide-details
       />
@@ -40,7 +39,7 @@
       <div v-else v-for="todo in todos" :key="todo.id" class="py-3">
         <div
           v-if="selectCategory === 'All'"
-          class="flex items-center justify-between w-full border-b-2 border-purple"
+          class="flex items-center justify-between w-full border-b-2 border-[#1867C0]"
         >
           <div class="flex items-center">
             <VCheckbox
@@ -70,7 +69,7 @@
         </div>
         <div
           v-if="selectCategory === 'Complete' && todo.isCompleted === true"
-          class="flex items-center justify-between border-b-2 border-purple"
+          class="flex items-center justify-between border-b-2 border-[#1867C0]"
         >
           <div class="flex items-center">
             <VCheckbox
@@ -100,7 +99,7 @@
         </div>
         <div
           v-if="selectCategory === 'UnComplete' && !todo.isCompleted"
-          class="flex items-center justify-between border-b-2 border-purple"
+          class="flex items-center justify-between border-b-2 border-[#1867C0]"
         >
           <div class="flex items-center">
             <VCheckbox
@@ -142,10 +141,10 @@
         :rules="baseRules"
         :label="$t('todoList')"
         :class="[
-          'child:text-purple rounded-md w-full my-2 border-2',
+          'child:text-[#1867C0] rounded-md w-full my-2 border-2',
           theme.global.name.value === 'dark'
             ? 'border-white child:text-white'
-            : 'border-purple child:text-purple'
+            : 'border-[#1867C0] child:text-[#1867C0]'
         ]"
         :color="theme.global.name.value === 'dark' ? 'white' : ''"
         hide-details
@@ -168,7 +167,6 @@
         >
       </div>
     </WrapperDialog>
-
     <WrapperDialog
       :isOpenDialog="searchDialog"
       :headerTitle="$t('searchTodo')"
@@ -183,7 +181,7 @@
           ' rounded-md w-full my-2 border-2',
           theme.global.name.value === 'dark'
             ? 'border-white child:text-white'
-            : 'border-purple child:text-purple'
+            : 'border-[#1867C0] child:text-[#1867C0]'
         ]"
         color="white"
         prepend-inner-icon="mdi-magnify"
@@ -192,38 +190,37 @@
         @keyup.enter="searchHandler"
       />
       <div
-          v-for="todo in searchTodos"
-          :key="todo.id"
-          class="flex items-center justify-between w-full border-b-2 border-purple"
-        >
-          <div class="flex items-center">
-            <VCheckbox
-              v-model="todo.isCompleted"
-              :value="!checkBoxTodo"
-              color="indigo-darken-3"
-              hide-details
-              @click="editTodoCompleted(todo)"
-            />
-            <p
-              :class="[
-                'flex items-center justify-center',
-                todo.isCompleted ? 'line-through text-gray-300' : ''
-              ]"
-            >
-              {{ todo.title }}
-            </p>
-          </div>
-          <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
-            <VBtn icon class="!shadow-none" @click="editTodoPropmt(todo)">
-              <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
-            </VBtn>
-            <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
-              <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
-            </VBtn>
-          </div>
+        v-for="todo in searchTodos"
+        :key="todo.id"
+        class="flex items-center justify-between w-full border-b-2 border-[#1867C0]"
+      >
+        <div class="flex items-center">
+          <VCheckbox
+            v-model="todo.isCompleted"
+            :value="!checkBoxTodo"
+            color="indigo-darken-3"
+            hide-details
+            @click="editTodoCompleted(todo)"
+          />
+          <p
+            :class="[
+              'flex items-center justify-center',
+              todo.isCompleted ? 'line-through text-gray-300' : ''
+            ]"
+          >
+            {{ todo.title }}
+          </p>
         </div>
+        <div :class="['flex items-center gap-4', todo.isCompleted ? 'hidden' : '']">
+          <VBtn icon class="!shadow-none" @click="editTodoPropmt(todo)">
+            <VIcon class="hover:!text-blue-800" color="#d1d5db">mdi-pencil-outline</VIcon>
+          </VBtn>
+          <VBtn icon class="!shadow-none" @click="removeTodoPrompt(todo.id)">
+            <VIcon class="hover:!text-red-600" color="#d1d5db">mdi-delete-outline</VIcon>
+          </VBtn>
+        </div>
+      </div>
     </WrapperDialog>
-
     <WrapperSnackBar
       v-model:snackBar="snackBar"
       :snackbarText="snackbarText"
@@ -232,13 +229,25 @@
     />
   </VCard>
   <VBtn
-    class="absolute right-0 -bottom-20 !shadow-none"
+    class="absolute left-0 -bottom-20 !shadow-none"
     icon
-    color="#6c63ff"
+    color="#1867C0"
     @click="searchTodoPrompt"
   >
     <VIcon color="white">mdi-magnify</VIcon>
   </VBtn>
+  <div
+    :class="[
+      locale == 'fa' ? '-right-20' : ' -left-20',
+      'absolute -top-14 bg-gradient-to-r from-cyan-500 to-cyan-800 w-[200px] h-[200px] rounded-full'
+    ]"
+  ></div>
+  <div
+    :class="[
+      locale == 'fa' ? '-left-20' : '-right-20',
+      'absolute -bottom-14 bg-gradient-to-r from-blue-500 to-blue-800 w-[200px] h-[200px] rounded-full'
+    ]"
+  ></div>
 </template>
 
 <script lang="ts" setup>
@@ -254,7 +263,7 @@ import { useLocalstorage } from '@/composables/useLocalstorage'
 import type { TodosInfo } from './type'
 import { useRules } from '@/composables/useRules'
 
-const { t } = useI18n()
+const { locale, t } = useI18n()
 const theme = useTheme()
 
 const { width } = useResponsiveWidth()
@@ -281,11 +290,7 @@ const removeDialog = ref(false)
 const idTodo = ref<string>('')
 const idUsername = ref<string | null>(getLocalStorage('id'))
 
-const {
-  validationBase,
-  baseRules,
-  isValidationUser
-} = useRules()
+const { validationBase, baseRules, isValidationUser } = useRules()
 
 const getTodos = async () => {
   await getApi(`profile/${idUsername.value}?_embed=todos`).then((data) => {
@@ -299,14 +304,14 @@ const searchTodoPrompt = async () => {
 
 const searchHandler = () => {
   if (searchTodo.value) {
-  const copyTodo = [...todos.value]
-  const includeTodos = copyTodo.filter((todo:TodosInfo) =>  {
-    if (todo.title.includes(searchTodo.value)){
-      return todo
-    }else {
-      return null
-    }
-  })
+    const copyTodo = [...todos.value]
+    const includeTodos = copyTodo.filter((todo: TodosInfo) => {
+      if (todo.title.includes(searchTodo.value)) {
+        return todo
+      } else {
+        return null
+      }
+    })
     searchTodos.value = includeTodos
   }
 }
@@ -405,3 +410,19 @@ onMounted(() => {
   getTodos()
 })
 </script>
+
+<style scoped>
+.v-card--variant-elevated {
+  background: rgba(255, 255, 255, 0.11) !important;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+}
+
+.v-list {
+  background: rgba(255, 255, 255, 0) !important;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  -tw-backdrop-blur: blur(8px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast)
+    var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia) !important;
+}
+</style>

@@ -1,16 +1,22 @@
 <template>
-  <VCard class="text-center !shadow-none" :title="$t('weather').toUpperCase()" :width="width">
+  <VCard
+    class="text-center backdrop-blur-md shadow-none !z-50"
+    :title="$t('weather').toUpperCase()"
+    :width="width"
+  >
     <VCardText>
       <VSelect
         v-model="citySelect"
         :items="options"
-        class="text-white bg-[#6c63ff] rounded-md w-full"
+        class="text-white rounded-md w-full"
+        bg-color="primary"
+        dir="rtl"
+        :reverse="true"
         single-line
         hide-details
         @update:modelValue="handleChange"
       />
     </VCardText>
-
     <VList v-if="!weatherDetails">
       <VListItem>
         <div class="text-center">
@@ -20,12 +26,12 @@
     </VList>
     <VList v-else>
       <div
-        class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:flex child:items-center child:justify-between child:py-2 child:border-b-2 child:border-purple"
+        class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:flex child:items-center child:justify-between child:py-2 child:border-b-2 child:border-[#1867C0]"
       >
         <div>
           <h3>
             <VIcon>mdi-weather-windy</VIcon>
-            WindSpeed:
+            {{ $t('windSpeed') }}:
           </h3>
           <p>
             {{ weatherDetails.current_weather.windspeed }}
@@ -35,7 +41,7 @@
         <div>
           <h3>
             <VIcon>mdi-thermometer</VIcon>
-            temp:
+            {{ $t('temperatur') }}:
           </h3>
           <p>
             {{ weatherDetails.current_weather.temperature }}
@@ -43,12 +49,11 @@
           </p>
         </div>
         <div>
-          
           <h3>
             <VIcon>
               {{ weatherDescription[1] }}
             </VIcon>
-            status:
+            {{ $t('status') }}:
           </h3>
           <p>
             {{ weatherDescription[0] }}
@@ -56,13 +61,11 @@
         </div>
       </div>
     </VList>
-    <WrapperSnackBar
-      v-model:snackBar="snackBar"
-      :snackbarText="snackbarText"
-      :timeout="3000"
-      :colorSet="colorSnackBar"
-    />
   </VCard>
+  <div class="absolute -top-20 -left-20 bg-gradient-to-r from-cyan-500 to-cyan-800 w-[200px] h-[200px] rounded-full">
+  </div>
+  <div class="absolute -bottom-20 -right-20 bg-gradient-to-r from-blue-500 to-blue-800 w-[200px] h-[200px] rounded-full">
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -70,18 +73,14 @@ import { ref, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getWeatherDescription } from '../weatherStatus'
 import weatherData from '../data/ir.json'
-import WrapperSnackBar from 'wrapper/WrapperSnackBar'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import useHttp from '@/composables/useHttp'
-import { useSnackbar } from '@/composables/useSnackBar'
 import type { WeatherTypeData, WeatherApi, WeatherCatch } from '../type'
 import { VIcon } from 'vuetify/lib/components/index.mjs'
 
 const { width } = useResponsiveWidth()
 const { getApi, postApi, putApi } = useHttp()
 const { t } = useI18n()
-
-const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
 
 const citySelect = ref<string>('Tehran')
 const weathers = ref<WeatherTypeData[]>(weatherData)
@@ -100,7 +99,6 @@ const getCachedWeather = async (city: string) => {
     }
     return null
   } catch (error) {
-    showSnackbar(t('error'), 'error')
     return null
   }
 }
@@ -139,7 +137,6 @@ const handleChange = async () => {
         }
       }
     } catch (error) {
-      showSnackbar(t('error'), 'error')
       emptyText()
     }
   }
@@ -155,9 +152,8 @@ const postWeatherData = async (city: string, weatherData: WeatherApi) => {
       timeSubmit: currentTime
     })
     currentCityId.value = response.id
-    showSnackbar(t('weather_data_saved'), 'success')
   } catch (error) {
-    showSnackbar(t('error'), 'error')
+    console.log(error)
   }
 }
 
@@ -166,7 +162,7 @@ const checkCityPosted = async (city: string) => {
     const response = await getApi(`weather?city=${city}`)
     return response.length > 0
   } catch (error) {
-    showSnackbar(t('error'), 'error')
+    console.error(error)
     return false
   }
 }
@@ -179,9 +175,8 @@ const putWeatherData = async (city: string, weatherData: WeatherApi, id: string)
       ...weatherData,
       timeSubmit: currentTime
     })
-    showSnackbar(t('weather_data_saved'), 'success')
   } catch (error) {
-    showSnackbar(t('error'), 'error')
+    console.error(error)
   }
 }
 
@@ -194,7 +189,6 @@ const emptyText = () => {
 watch(weatherDetails, (newDetails) => {
   if (newDetails) {
     weatherDescription.value = getWeatherDescription(newDetails.current_weather.weathercode, t)
-    
   } else {
     weatherDescription.value = []
   }
@@ -207,11 +201,23 @@ onMounted(() => {
 
 <style scoped>
 h3 {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 p {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 500;
+}
+
+.v-card--variant-elevated {
+  background: rgba(255, 255, 255, 0.11) !important;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+}
+
+.v-list{
+  background: rgba(255, 255, 255, 0) !important;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  -tw-backdrop-blur: blur(8px);
+    backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia) !important; 
 }
 </style>

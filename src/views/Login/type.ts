@@ -4,4 +4,5 @@ export  type profileInfo = {
     password : string
     phoneNumber: string
     lang:string
+    lastTimeUpdated: string
 }

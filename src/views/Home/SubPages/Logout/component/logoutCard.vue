@@ -1,13 +1,15 @@
 <template>
-  <VCard class="text-center !shadow-none" :title="$t('logout')" :width="width">
+  <VCard class="text-center shadow-lg" :title="$t('logout')" :width="width">
     <p class="mt-4 text-2xl my-4">
       {{ $t('logoutText') }}
     </p>
     <div class="flex items-center justify-center gap-2 my-3">
-      <VBtn class="child:text-xl" size="large" color="info" @click="logutHandler">
-        {{ $t('yes') }}
+      <VBtn color="info" @click="logutHandler">
+        <router-link to="login">
+          {{ $t('yes') }}
+        </router-link>
       </VBtn>
-      <VBtn class="child:text-xl" size="large" color="none">
+      <VBtn  color="none">
         <router-link to="dashboard">
           {{ $t('no') }}
         </router-link>
@@ -20,15 +22,17 @@
       :colorSet="colorSnackBar"
     />
   </VCard>
+ 
 </template>
 
 <script lang="ts" setup>
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import { useSnackbar } from '@/composables/useSnackBar'
-import { t } from 'i18next'
+import { useI18n } from 'vue-i18n'
 
 const { width } = useResponsiveWidth()
 const { snackBar, colorSnackBar, snackbarText, showSnackbar } = useSnackbar()
+const { t } = useI18n()
 
 const logutHandler = () => {
   try {

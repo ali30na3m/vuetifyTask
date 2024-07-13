@@ -12,6 +12,7 @@ const messages = {
     showUserDetail:'user detail',
     userPhoneTitle:'user phone',
     userPhone:'user phone',
+    lastTimeUpdated:'last update',
     submit:'submit'
   },
   fa: {
@@ -30,6 +31,7 @@ const messages = {
     submit: 'تایید',
     userPhoneTitle:'تلفن کاربر',
     userPhone:'شماره تلفن',
+    lastTimeUpdated:'آخرین آپدیت',
     showUserDetail:'اطلاعات کاربر'
   }
 }

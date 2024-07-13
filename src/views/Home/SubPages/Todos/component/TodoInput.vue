@@ -6,7 +6,7 @@
         :label="$t('todoList')"
         :class="[
           'child:text-purple rounded-md w-[350px] border-2',
-          theme.global.name.value === 'dark' ? 'border-white' : 'border-purple'
+          theme.global.name.value === 'dark' ? 'border-white' : 'border-[#1867C0]'
         ]"
         color="white"
         clearable
@@ -19,7 +19,8 @@
       <VSelect
         v-model="selectCategory"
         :items="categories"
-        class="text-white bg-[#6c63ff] rounded-md w-10"
+        class="text-white rounded-md w-10"
+        bg-color="primary"
         single-line
         hide-details
       />
