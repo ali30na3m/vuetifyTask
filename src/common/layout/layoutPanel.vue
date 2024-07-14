@@ -1,15 +1,15 @@
 <template>
   <VLayout :dir="locale === 'en' ? 'ltr' : 'rtl'">
-    <VAppBar color="primary" prominent>
+    <VAppBar class="!bg-gradient-to-l from-[#1867C0] to-blue-950" prominent>
       <div
         :class="[
           'flex justify-between items-center w-[100%]',
           locale === 'en' ? '' : 'flex-row-reverse'
         ]"
       >
-        <VAppBarNavIcon variant="text" @click.stop="isDrawer = !isDrawer"></VAppBarNavIcon>
+        <VAppBarNavIcon class="text-white" variant="text" @click.stop="isDrawer = !isDrawer"></VAppBarNavIcon>
         <VSpacer />
-        <router-link class="ml-3 circle-button" to="logout" >
+        <router-link class="ml-3 circle-button text-white" to="logout" >
           <VIcon>mdi-logout</VIcon>
         </router-link>
       </div>

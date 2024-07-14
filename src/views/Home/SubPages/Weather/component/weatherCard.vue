@@ -86,7 +86,6 @@ import weatherData from '../data/ir.json'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import useHttp from '@/composables/useHttp'
 import type { WeatherTypeData, WeatherApi, WeatherCatch } from '../type'
-import { VIcon } from 'vuetify/lib/components/index.mjs'
 
 const { width } = useResponsiveWidth()
 const { getApi, postApi, putApi } = useHttp()
