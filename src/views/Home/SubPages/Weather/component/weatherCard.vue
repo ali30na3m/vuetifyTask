@@ -2,20 +2,21 @@
   <VCard
     class="text-center backdrop-blur-md shadow-xl !z-50"
     :title="$t('weather').toUpperCase()"
-    width="350px"
+    :width="width"
   >
     <VCardText>
-      <VSelect
-        v-model="citySelect"
-        :items="options"
-        class="text-white rounded-md w-full"
-        bg-color="primary"
-        dir="rtl"
-        :reverse="true"
-        single-line
-        hide-details
-        @update:modelValue="handleChange"
-      />
+      <VLocaleProvider :locale="locale">
+        <VSelect
+          v-model="citySelect"
+          :items="options"
+          class="text-white rounded-md w-full"
+          bg-color="primary"
+          dir="rtl"
+          single-line
+          hide-details
+          @update:modelValue="handleChange"
+        />
+      </VLocaleProvider>
     </VCardText>
     <VList v-if="!weatherDetails">
       <VListItem>
@@ -26,17 +27,9 @@
     </VList>
     <VList v-else>
       <div
-        class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:flex child:items-center child:justify-center child:py-2"
+        class="my-3 flex flex-col items-center gap-8 child:w-[90%] child:border-b-2 child:border-[#1867C0] child:flex child:items-center child:justify-between child:py-2"
       >
-        <h3>{{ citySelect }}</h3>
-        <h3>
-          {{ weatherDetails.current_weather.temperature }}
-          {{ weatherDetails.current_weather_units.temperature }}
-        </h3>
-        <h3>
-          {{ weatherDescription[0] }}
-        </h3>
-        <!-- <div>
+        <div>
           <h3>
             <VIcon>mdi-weather-windy</VIcon>
             {{ $t('windSpeed') }}:
@@ -66,7 +59,7 @@
           <p>
             {{ weatherDescription[0] }}
           </p>
-        </div> -->
+        </div>
       </div>
     </VList>
   </VCard>
@@ -89,7 +82,7 @@ import type { WeatherTypeData, WeatherApi, WeatherCatch } from '../type'
 
 const { width } = useResponsiveWidth()
 const { getApi, postApi, putApi } = useHttp()
-const { t } = useI18n()
+const { locale, t } = useI18n()
 
 const citySelect = ref<string>('Tehran')
 const weathers = ref<WeatherTypeData[]>(weatherData)

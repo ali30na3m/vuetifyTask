@@ -1,83 +1,71 @@
 <template>
-  <VCard
-    class="text-center backdrop-blur-md !z-50 shadow-xl"
-    :title="$t('profile')"
-    :width="width"
-  >
+  <VCard class="text-center backdrop-blur-md !z-50 shadow-xl" :title="$t('profile')" :width="width">
     <VCardText>
-      <VTextField
-        v-model="username"
-        :rules="baseRules"
-        :label="$t('username')"
-        :class="[
-          'rounded-md w-full my-2 border-2',
-          theme.global.name.value === 'dark'
-            ? 'border-white child:text-white'
-            : 'border-[#1867C0] child:text-black'
-        ]"
-        :color="theme.global.name.value === 'dark' ? 'white' : ''"
-        :reverse="locale == 'fa' ? true : false"
-        :prepend-inner-icon="locale == 'fa' ? '' : 'mdi-account'"
-        :append-inner-icon="locale == 'fa' ? 'mdi-account' : ''"
-        hide-details
-        @keyup.enter="submitHandler"
-      >
-        <template v-if="locale == 'fa'" v-slot:prepend-inner>
-          <VIcon @click="username = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
-        </template>
-        <template v-else v-slot:append-inner>
-          <VIcon @click="username = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
-        </template>
-      </VTextField>
-      <VTextField
-        v-model="phoneNumber"
-        :rules="phoneRules"
-        :label="$t('phoneNumber')"
-        :class="[
-          ' rounded-md w-full my-2 border-2',
-          theme.global.name.value === 'dark'
-            ? 'border-white child:text-white'
-            : 'border-[#1867C0] child:text-black'
-        ]"
-        :color="theme.global.name.value === 'dark' ? 'white' : ''"
-        :reverse="locale == 'fa' ? true : false"
-        :prepend-inner-icon="locale == 'fa' ? '' : 'mdi-phone'"
-        :append-inner-icon="locale == 'fa' ? 'mdi-phone' : ''"
-        type="tel"
-        hide-details
-        @keyup.enter="submitHandler"
-      >
-        <template v-if="locale == 'fa'" v-slot:prepend-inner>
-          <VIcon @click="phoneNumber = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
-        </template>
-        <template v-else v-slot:append-inner>
-          <VIcon @click="phoneNumber = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
-        </template>
-      </VTextField>
-      <VSelect
-        v-model="langSelect"
-        :items="languages"
-        :reverse="locale == 'fa' ? true : false"
-        label="Select Language"
-        prepend-inner-icon="mdi-translate"
-        class="text-white rounded-md w-full my-2"
-        bg-color="primary"
-        persistent-hint
-        single-line
-        hide-details
-      />
-      <VSelect
-        v-model="themeSelect"
-        :items="themes"
-        :reverse="locale == 'fa' ? true : false"
-        label="Select Theme"
-        prepend-inner-icon="mdi-theme-light-dark"
-        class="text-white rounded-md w-full my-2"
-        bg-color="primary"
-        persistent-hint
-        single-line
-        hide-details
-      />
+      <VLocaleProvider :locale="locale">
+        <VTextField
+          v-model="username"
+          :rules="baseRules"
+          :label="$t('username')"
+          :class="[
+            'rounded-md w-full my-2 border-2',
+            theme.global.name.value === 'dark'
+              ? 'border-white child:text-white'
+              : 'border-[#1867C0] child:text-black'
+          ]"
+          :color="theme.global.name.value === 'dark' ? 'white' : ''"
+          prepend-inner-icon="mdi-account"
+          clearable
+          hide-details
+          @keyup.enter="submitHandler"
+        />
+      </VLocaleProvider>
+      <VLocaleProvider :locale="locale">
+        <VTextField
+          v-model="phoneNumber"
+          :rules="phoneRules"
+          :label="$t('phoneNumber')"
+          :class="[
+            ' rounded-md w-full my-2 border-2 no-spin-buttons',
+            theme.global.name.value === 'dark'
+              ? 'border-white child:text-white'
+              : 'border-[#1867C0] child:text-black'
+          ]"
+          :color="theme.global.name.value === 'dark' ? 'white' : ''"
+          prepend-inner-icon="mdi-phone"
+          clearable
+          hide-details
+          @input="validateNumberInput"
+          @keyup.enter="submitHandler"
+        />
+      </VLocaleProvider>
+      <VLocaleProvider :locale="locale">
+        <VSelect
+          v-model="langSelect"
+          :items="languages"
+          prepend-inner-icon="mdi-translate"
+          label="Select Language"
+          class="text-white rounded-md w-full my-2"
+          bg-color="primary"
+          persistent-hint
+          hide-selected
+          single-line
+          hide-details
+        />
+      </VLocaleProvider>
+      <VLocaleProvider :locale="locale">
+        <VSelect
+          v-model="themeSelect"
+          :items="themes"
+          prepend-inner-icon="mdi-theme-light-dark"
+          label="select theme"
+          class="text-white rounded-md w-full my-2"
+          bg-color="primary"
+          persistent-hint
+          hide-selected
+          single-line
+          hide-details
+        />
+      </VLocaleProvider>
       <div class="flex items-center justify-center gap-3">
         <VBtn width="30%" color="info" @click="submitHandler">{{ $t('submit') }}</VBtn>
       </div>
@@ -112,13 +100,13 @@
     ]"
   ></div>
 </template>
-  
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTheme } from 'vuetify'
 import WrapperSnackBar from 'wrapper/WrapperSnackBar'
-import WrapperDiscription from 'wrapper/WrapperDiscription.jsx'
+import WrapperDiscription from 'wrapper/WrapperDiscription'
 import useHttp from '@/composables/useHttp'
 import { useLocalstorage } from '@/composables/useLocalstorage'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
@@ -155,6 +143,13 @@ const titleDiscriptionData = ref<string[]>([])
 
 const openDiscription = () => {
   showModal.value = true
+}
+
+const validateNumberInput = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const value = input.value
+  const numericValue = value.replace(/[^0-9]/g, '')
+  phoneNumber.value = numericValue
 }
 
 const getProfile = async () => {

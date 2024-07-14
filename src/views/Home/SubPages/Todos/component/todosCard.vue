@@ -6,41 +6,36 @@
     height="400px"
   >
     <div class="flex items-center gap-4 w-full px-3">
-      <VTextField
-        v-model="todoTitle"
-        :rules="baseRules"
-        :label="$t('todoList')"
-        :class="[
-          'rounded-md w-[50%] my-2 border-2',
-          theme.global.name.value === 'dark'
-            ? 'border-white child:text-white'
-            : 'border-[#1867C0] child:text-black'
-        ]"
-        :color="theme.global.name.value === 'dark' ? 'white' : ''"
-        :reverse="locale === 'fa' ? true : false"
-        hide-details
-        @keyup.enter="addButton"
-      >
-        <template v-if="locale == 'fa'" v-slot:prepend-inner>
-          <VIcon @click="todoTitle = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
-          <VIcon @click="addButton">{{ locale === 'fa' ? 'mdi-plus' : '' }}</VIcon>
-        </template>
-        <template v-else v-slot:append-inner>
-          <VIcon @click="todoTitle = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
-          <VIcon @click="addButton">{{ locale === 'fa' ? '' : 'mdi-plus' }}</VIcon>
-        </template>
-      </VTextField>
+      <VLocaleProvider :locale="locale">
+        <VTextField
+          v-model="todoTitle"
+          :rules="baseRules"
+          :label="$t('todoList')"
+          :class="[
+            'rounded-md w-[50%] my-2 border-2',
+            theme.global.name.value === 'dark'
+              ? 'border-white child:text-white'
+              : 'border-[#1867C0] child:text-black'
+          ]"
+          :color="theme.global.name.value === 'dark' ? 'white' : ''"
+          hide-details
+          clearable
+          @keyup.enter="addButton"
+        />
+      </VLocaleProvider>
       <VBtn height="54px" color="#1867C0" @click="searchTodoPrompt">
         <VIcon color="white">mdi-magnify</VIcon>
       </VBtn>
-      <VSelect
-        v-model="selectCategory"
-        :items="categories"
-        class="text-white rounded-md w-10"
-        bg-color="primary"
-        single-line
-        hide-details
-      />
+      <VLocaleProvider :locale="locale">
+        <VSelect
+          v-model="selectCategory"
+          :items="categories"
+          class="text-white rounded-md w-10"
+          bg-color="primary"
+          single-line
+          hide-details
+        />
+      </VLocaleProvider>
     </div>
 
     <TodoStore
@@ -58,28 +53,22 @@
       @update:isOpenDialog="editDialog = $event"
       @updateTodo="updateTodo"
     >
-      <VTextField
-        v-model="editTodoTitle"
-        :rules="baseRules"
-        :label="$t('todoList')"
-        :class="[
-          'child:text-[#1867C0] rounded-md w-full my-2 border-2',
-          theme.global.name.value === 'dark'
-            ? 'border-white child:text-white'
-            : 'border-[#1867C0] child:text-[#1867C0]'
-        ]"
-        :color="theme.global.name.value === 'dark' ? 'white' : ''"
-        :reverse="locale === 'fa' ? true : false"
-        hide-details
-        @keyup.enter="updateTodo"
-      >
-        <template v-if="locale == 'fa'" v-slot:prepend-inner>
-          <VIcon @click="editTodoTitle = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
-        </template>
-        <template v-else v-slot:append-inner>
-          <VIcon @click="editTodoTitle = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
-        </template>
-      </VTextField>
+      <VLocaleProvider :locale="locale">
+        <VTextField
+          v-model="editTodoTitle"
+          :rules="baseRules"
+          :label="$t('todoList')"
+          :class="[
+            'child:text-[#1867C0] rounded-md w-full my-2 border-2',
+            theme.global.name.value === 'dark'
+              ? 'border-white child:text-white'
+              : 'border-[#1867C0] child:text-[#1867C0]'
+          ]"
+          :color="theme.global.name.value === 'dark' ? 'white' : ''"
+          hide-details
+          @keyup.enter="updateTodo"
+        />
+      </VLocaleProvider>
     </WrapperDialog>
     <WrapperDialog
       :isOpenDialog="removeDialog"
@@ -101,32 +90,24 @@
       @update:isOpenDialog="searchDialog = $event"
       @updateTodo="searchDialog = $event"
     >
-      <VTextField
-        v-model="searchTodo"
-        :rules="baseRules"
-        :label="$t('searchTodo')"
-        :class="[
-          ' rounded-md w-full my-2 border-2',
-          theme.global.name.value === 'dark'
-            ? 'border-white child:text-white'
-            : 'border-[#1867C0] child:text-[#1867C0]'
-        ]"
-        color="white"
-        :prepend-inner-icon="locale === 'fa' ? '' : 'mdi-magnify'"
-        :append-inner-icon="locale === 'fa' ? 'mdi-magnify' : ''"
-        :reverse="locale === 'fa' ? true : false"
-        hide-details
-        @keyup.enter="searchHandler"
-      >
-        <template v-if="locale == 'fa'" v-slot:prepend-inner>
-          <VIcon @click="searchTodo = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
-          <VIcon @click="searchHandler">{{ locale === 'fa' ? 'mdi-magnify' : '' }}</VIcon>
-        </template>
-        <template v-else v-slot:append-inner>
-          <VIcon @click="searchTodo = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
-          <VIcon @click="searchHandler">{{ locale === 'fa' ? '' : 'mdi-magnify' }}</VIcon>
-        </template>
-      </VTextField>
+      <VLocaleProvider :locale="locale">
+        <VTextField
+          v-model="searchTodo"
+          :rules="baseRules"
+          :label="$t('searchTodo')"
+          :class="[
+            ' rounded-md w-full my-2 border-2',
+            theme.global.name.value === 'dark'
+              ? 'border-white child:text-white'
+              : 'border-[#1867C0] child:text-[#1867C0]'
+          ]"
+          color="white"
+          prepend-inner-icon="mdi-magnify"
+          clearable
+          hide-details
+          @keyup.enter="searchHandler"
+        />
+      </VLocaleProvider>
       <div
         v-for="todo in searchTodos"
         :key="todo.id"
@@ -188,13 +169,13 @@ import { useI18n } from 'vue-i18n'
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import TodoStore from './TodosStore.vue'
 import WrapperSnackBar from 'wrapper/WrapperSnackBar'
-import WrapperDialog from 'wrapper/WrapperDialog.tsx'
+import WrapperDialog from 'wrapper/WrapperDialog'
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth'
 import useHttp from '@/composables/useHttp'
 import { useSnackbar } from '@/composables/useSnackBar'
 import { useLocalstorage } from '@/composables/useLocalstorage'
 import { useRules } from '@/composables/useRules'
-import type { TodosInfo } from './type'
+import type { TodosInfo } from '../type'
 
 const { locale, t } = useI18n()
 const theme = useTheme()
@@ -237,9 +218,8 @@ const searchTodoPrompt = async () => {
 
 const handleInputTitle = (title: string) => {
   searchTodos.value = []
-  searchTodo.value = title;
-};
-
+  searchTodo.value = title
+}
 
 const searchHandler = () => {
   if (searchTodo.value) {

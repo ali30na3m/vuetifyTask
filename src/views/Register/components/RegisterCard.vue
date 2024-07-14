@@ -8,85 +8,69 @@
         :width="width"
       >
         <VCardItem>
-          <VTextField
-            v-model="username"
-            :rules="baseRules"
-            :label="$t('username')"
-            :class="[
-              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
-              theme.global.name.value === 'dark'
-                ? 'border-white child:text-white'
-                : 'border-[#1867C0] child:text-[#1867C0]'
-            ]"
-            :color="theme.global.name.value === 'dark' ? 'white' : ''"
-            :prepend-inner-icon="locale === 'fa' ? '' : 'mdi-account'"
-            :append-inner-icon="locale === 'fa' ? 'mdi-account' : ''"
-            :reverse="locale === 'fa' ? true : false"
-            hide-details
-            @keyup.enter="registerHandler"
-          >
-            <template v-if="locale == 'fa'" v-slot:prepend-inner>
-              <VIcon @click="username = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
-            </template>
-            <template v-else v-slot:append-inner>
-              <VIcon @click="username = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
-            </template>
-          </VTextField>
+          <VLocaleProvider :locale="locale">
+            <VTextField
+              v-model="username"
+              :rules="baseRules"
+              :label="$t('username')"
+              :class="[
+                'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
+                theme.global.name.value === 'dark'
+                  ? 'border-white child:text-white'
+                  : 'border-[#1867C0] child:text-[#1867C0]'
+              ]"
+              :color="theme.global.name.value === 'dark' ? 'white' : ''"
+              prepend-inner-icon="mdi-account"
+              clearable
+              hide-details
+              @keyup.enter="registerHandler"
+            />
+          </VLocaleProvider>
         </VCardItem>
         <VCardItem>
-          <VTextField
-            v-model="password"
-            :rules="baseRules"
-            :label="$t('password')"
-            :class="[
-              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
-              theme.global.name.value === 'dark'
-                ? 'border-white child:text-white'
-                : 'border-[#1867C0] child:text-[#1867C0]'
-            ]"
-            :color="theme.global.name.value === 'dark' ? 'white' : ''"
-            :type="visible ? 'text' : 'password'"
-            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-            :reverse="locale === 'fa' ? true : false"
-            hide-details
-            @click:append-inner="visible = !visible"
-            @keyup.enter="registerHandler"
-          >
-            <template v-if="locale == 'fa'" v-slot:prepend-inner>
-              <VIcon @click="password = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
-            </template>
-            <template v-else v-slot:append-inner>
-              <VIcon @click="password = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
-            </template>
-          </VTextField>
+          <VLocaleProvider :locale="locale">
+            <VTextField
+              v-model="password"
+              :rules="baseRules"
+              :label="$t('password')"
+              :class="[
+                'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
+                theme.global.name.value === 'dark'
+                  ? 'border-white child:text-white'
+                  : 'border-[#1867C0] child:text-[#1867C0]'
+              ]"
+              :color="theme.global.name.value === 'dark' ? 'white' : ''"
+              :type="visible ? 'text' : 'password'"
+              prepend-inner-icon="mdi-lock"
+              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+              hide-details
+              clearable
+              @click:append-inner="(visible = !visible)"
+              @click:prepend-inner="(visible = !visible) "
+              @keyup.enter="registerHandler"
+            />
+          </VLocaleProvider>
         </VCardItem>
         <VCardItem>
-          <VTextField
-            v-model="phoneNumber"
-            :rules="phoneRules"
-            :label="$t('phoneNumber')"
-            :class="[
-              'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
-              theme.global.name.value === 'dark'
-                ? 'border-white child:text-white'
-                : 'border-[#1867C0] child:text-[#1867C0]'
-            ]"
-            :color="theme.global.name.value === 'dark' ? 'white' : ''"
-            :prepend-inner-icon="locale === 'fa' ? '' : 'mdi-phone'"
-            :append-inner-icon="locale === 'fa' ? 'mdi-phone' : ''"
-            :reverse="locale === 'fa' ? true : false"
-            inputmode="numeric"
-            type="tel"
-            hide-details
-            @keyup.enter="registerHandler"
-          >
-            <template v-if="locale == 'fa'" v-slot:prepend-inner>
-              <VIcon @click="phoneNumber = ''">{{ locale === 'fa' ? 'mdi-close' : '' }}</VIcon>
-            </template>
-            <template v-else v-slot:append-inner>
-              <VIcon @click="phoneNumber = ''">{{ locale === 'fa' ? '' : 'mdi-close' }}</VIcon>
-            </template>
-          </VTextField>
+          <VLocaleProvider :locale="locale">
+            <VTextField
+              v-model="phoneNumber"
+              :rules="phoneRules"
+              :label="$t('phoneNumber')"
+              :class="[
+                'flex items-center justify-center mx-auto rounded-md w-[80%] my-2 border-2 child:text-[#1867C0]',
+                theme.global.name.value === 'dark'
+                  ? 'border-white child:text-white'
+                  : 'border-[#1867C0] child:text-[#1867C0]'
+              ]"
+              :color="theme.global.name.value === 'dark' ? 'white' : ''"
+              prepend-inner-icon="mdi-phone"
+              hide-details
+              clearable
+              @input="validateNumberInput"
+              @keyup.enter="registerHandler"
+            />
+          </VLocaleProvider>
         </VCardItem>
         <VCardItem>
           <VBtn width="30%" color="info" :disabled="!isValidationPhone" @click="registerHandler">{{
@@ -109,7 +93,7 @@
     />
   </VContainer>
 </template>
-    
+
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -142,7 +126,14 @@ const password = ref<string>('')
 const phoneNumber = ref<string>('')
 const visible = ref<boolean>(false)
 
-const registerHandler = async() => {
+const validateNumberInput = (event : Event) => {
+  const input = event.target as HTMLInputElement
+  const value = input.value
+  const numericValue = value.replace(/[^0-9]/g,'')
+  phoneNumber.value = numericValue
+}
+
+const registerHandler = async () => {
   validationBase()
   validatePhoneNumber()
 
